@@ -7,7 +7,6 @@ import Link from 'flarum/common/components/Link';
 export default class BlogAuthor extends Component {
   view() {
     const author = !this.attrs.loading ? (this.attrs.article ? this.attrs.article.user() : this.attrs.user) : null;
-
     return (
       <div className={'FlarumBlog-Article-Author'}>
         <div
@@ -19,7 +18,13 @@ export default class BlogAuthor extends Component {
 
         <div className={'FlarumBlog-Article-Author-Avatar'}>
           {author ? (
-            <Link href={app.route('user', { username: author.username() })}>{avatar(author)}</Link>
+            <Link href={app.route('user', { username: author.username() })}>
+              {author.data.attributes.blogImage ? (
+                <img class="Avatar" loading="lazy" src={author.data.attributes.blogImage} alt=""></img>
+              ) : (
+                avatar(author)
+              )}
+            </Link>
           ) : (
             <span className={'Avatar FlarumBlog-Author-Ghost'} />
           )}
@@ -28,10 +33,20 @@ export default class BlogAuthor extends Component {
         {author && (
           <div className={'FlarumBlog-Article-Author-Info'}>
             <Link href={app.route('user', { username: author.username() })} className={'FlarumBlog-Article-Author-Name'}>
-              {author.displayName()}
+
+              {author.data.attributes.blogName ? (
+                <div>
+                  <p>{author.data.attributes.blogName}</p>
+                  <small> {"@"+author.displayName()}</small>
+                </div>
+              ) : (
+                <div>
+                  {author.displayName()}
+                </div>
+              )}
+
             </Link>
             <p className={'FlarumBlog-Article-Author-Bio'}>{author.bio && author.bio()}</p>
-
             <ul className={'FlarumBlog-Article-Author-Extended'}>{listItems(this.items().toArray())}</ul>
           </div>
         )}

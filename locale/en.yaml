@@ -122,3 +122,10 @@ v17development-flarum-blog:
         featured: 
           title: Featured post
           helper_text: Fix this post in the top carousel
+    
+    user_settings:
+      settings: Blog Settings
+      name: Name
+      image: Image
+      save: Save Blog Options
+      save_alert: Saved :D

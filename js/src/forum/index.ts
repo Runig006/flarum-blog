@@ -12,6 +12,8 @@ import compat from './compat';
 import addSidebarNav from './utils/addSidebarNav';
 
 import BlogItem from './pages/BlogItem';
+import addPreferences from './utils/addPreferences';
+import UserCard from './components/UserCard';
 
 // Register Flarum Blog
 app.initializers.add(
@@ -53,6 +55,9 @@ app.initializers.add(
 
     // Add a link to the blog to the IndexPage sidebar, if enabled.
     addSidebarNav();
+
+    addPreferences();
+    UserCard();
   },
   -100000
 );

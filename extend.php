@@ -39,6 +39,9 @@ use V17Development\FlarumBlog\Query\FilterDiscussionsForBlogPosts;
 use V17Development\FlarumBlog\Query\BlogArticleFilterGambit;
 use V17Development\FlarumBlog\Query\FeaturedArticleFilterGambit;
 
+use Flarum\Extend\User as ExtendUser;
+use Flarum\Api\Serializer\UserSerializer;
+
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
@@ -100,4 +103,16 @@ return [
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
         ->addGambit(FeaturedArticleFilterGambit::class),
+
+    (new ExtendUser())
+        ->registerPreference('blogName', null, null)
+        ->registerPreference('blogImage', null, null),
+
+    (new Extend\ApiSerializer(UserSerializer::class))
+        ->attributes(function ($serializer, $user, $attributes) {
+            $attributes['blogName'] = $user->getPreference('blogName');
+            $attributes['blogImage'] = $user->getPreference('blogImage');
+            return $attributes;
+        })
+
 ];
