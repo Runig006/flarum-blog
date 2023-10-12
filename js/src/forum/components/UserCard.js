@@ -12,19 +12,18 @@ import AvatarEditor from 'flarum/forum/components/AvatarEditor';
 import listItems from 'flarum/common/helpers/listItems';
 import classList from 'flarum/common/utils/classList';
 
+function getName(user){
+  let name = app.translator.trans('core.lib.username.deleted_text');
+  if(user && user.displayName()){
+      name = user.displayName();
+  }
+  if(user.data.attributes.blogName){
+      name += " | " + user.data.attributes.blogName;
+  }
+  return <span className="username">{name}</span>;
+}
+
 export default function () {
-
-    var getName = function(user){
-        let name = app.translator.trans('core.lib.username.deleted_text');
-        if(user && user.displayName()){
-            name = user.displayName();
-        }
-        if(user.data.attributes.blogName){
-            name += " | " + user.data.attributes.blogName;
-        }
-        return <span className="username">{name}</span>;
-    }
-
     override(UserCard.prototype, 'view', function (original) {
         const user = this.attrs.user;
         const controls = UserControls.controls(user, this).toArray();
