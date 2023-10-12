@@ -37,20 +37,21 @@ use V17Development\FlarumBlog\BlogMeta\BlogMeta;
 // Filters
 use V17Development\FlarumBlog\Query\FilterDiscussionsForBlogPosts;
 use V17Development\FlarumBlog\Query\BlogArticleFilterGambit;
+use V17Development\FlarumBlog\Query\FeaturedArticleFilterGambit;
 
 return [
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js')
+        ->js(__DIR__ . '/js/dist/forum.js')
         ->css(__DIR__ . '/less/Forum.less')
         ->route('/blog', 'blog.overview', BlogOverviewController::class)
         ->route('/blog/compose', 'blog.compose', BlogComposerController::class)
         ->route('/blog/category/{category}', 'blog.category', BlogOverviewController::class)
         ->route('/blog/{id:[\d\S]+(?:-[^/]*)?}', 'blog.post', BlogItemController::class)
-        // Shall we add RSS?
-        // ->get('/blog/rss.xml', 'blog.rss.xml', RSS::class)
+    // Shall we add RSS?
+    // ->get('/blog/rss.xml', 'blog.rss.xml', RSS::class)
     ,
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js')
+        ->js(__DIR__ . '/js/dist/admin.js')
         ->css(__DIR__ . '/less/Admin.less'),
 
     (new Extend\Routes('api'))
@@ -87,7 +88,7 @@ return [
 
     (new Extend\ApiSerializer(TagSerializer::class))
         ->attributes(AttatchTagSerializerAttributes::class),
-    
+
     (new Extend\Event)
         ->listen(Saving::class, CreateBlogMetaOnDiscussionCreate::class),
 
@@ -96,4 +97,7 @@ return [
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
         ->addGambit(BlogArticleFilterGambit::class),
+
+    (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
+        ->addGambit(FeaturedArticleFilterGambit::class),
 ];

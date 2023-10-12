@@ -34,6 +34,7 @@ class AttachForumSerializerAttributes
         $attributes['canApproveBlogPosts'] = $serializer->getActor()->can('blog.canApprovePosts');
         $attributes['blogFeaturedCount'] = $this->settings->get('blog_featured_count', 3);
         $attributes['blogAddHero'] = $this->settings->get('blog_add_hero', true);
+        $attributes['htmlSideBar'] = $this->settings->get('blog_html_sidebar', null);
         return $attributes;
     }
 }

@@ -23,17 +23,42 @@
       font-weight: 500;
       font-size: 25px;
     }
-
+    &-carousel{
+      position: relative;
+    }
+    &-button{
+      position: absolute;
+      top: 40%;
+      z-index: 20;
+      .Button-icon{
+        margin-right: 0px;
+      }
+      &:first{
+        left: 0%;
+      }
+      &:last-child{
+        right: 0%;
+      }
+      
+      @media screen and (max-width: 799px) {
+        display: none;
+      }
+    }
     &-list {
       margin: 0 -10px;
+      display: flex;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      scroll-behavior: smooth; 
 
-      @media screen and (min-width: 768px) {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+      @media screen and (max-width: 799px) {
+        overflow-x: auto;
       }
 
       &-item {
+        min-width: 100%;
+        margin-left: 5px;
+
         display: flex;
         align-items: flex-end;
         text-decoration: none;
@@ -45,12 +70,12 @@
         border-radius: 5px;
         box-shadow: 0 7px 6px 4px fade(@muted-more-color, 11%);
         overflow: hidden;
-        margin: 10px 0;
         transition: box-shadow 250ms ease;
         position: relative;
 
         @media screen and (min-width: 799px) {
           height: 250px;
+          min-width: 33.3%;
         }
 
         &-top {
@@ -274,7 +299,7 @@
     // Sidebar
     .Sidebar {
       @media screen and (min-width: 768px) {
-        width: 300px;
+        width: 350px;
         flex-shrink: 0;
         flex-grow: 1;
       }

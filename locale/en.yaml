@@ -36,6 +36,8 @@ v17development-flarum-blog:
       default_article_image_text: Select a default article image to display when no image is set.
       add_hero_label: Show welcome banner
       add_hero_text: Show welcome banner on blog pages if it wasn't closed yet.
+      html_sidebar_label: Header Sidebar
+      html_sidebar_text: HTML to print on the top of the sidebar. RAW html, without any class apart of "BlogHtml"
 
   forum:
     blog: "Blog"
@@ -116,3 +118,7 @@ v17development-flarum-blog:
         highlight:
           title: Highlighted post
           helper_text: Give this post a big image on the blog overview page.
+        
+        featured: 
+          title: Featured post
+          helper_text: Fix this post in the top carousel

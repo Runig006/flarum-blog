@@ -26,13 +26,13 @@ class BlogOverviewController
         $queryParams = $request->getQueryParams();
 
         // Set meta tags
-        if(class_exists("V17Development\FlarumSeo\Extend")) {
+        if (class_exists("V17Development\FlarumSeo\Extend")) {
             // Get category
-            if(Arr::get($queryParams, 'category')) {
+            if (Arr::get($queryParams, 'category')) {
                 $category = Tag::where('slug', Arr::get($queryParams, 'category'))->firstOrFail();
 
                 // Set description of the tag has a description
-                if($category->getAttribute("description")) {
+                if ($category->getAttribute("description")) {
                     \V17Development\FlarumSeo\Extend::setDescription($category->getAttribute("description"));
                 }
             }
@@ -41,24 +41,49 @@ class BlogOverviewController
         }
 
         $q = "";
-        
+
         // Add language support
-        if($this->extensionManager->isEnabled("fof-discussion-language")) {
+        if ($this->extensionManager->isEnabled("fof-discussion-language")) {
             $q = "language:{$document->language} ";
         }
 
-        $q .= "is:blog" . (Arr::get($queryParams, 'category') ? " tag:" . Arr::get($queryParams, 'category') : "");
+        $qCategory = (Arr::get($queryParams, 'category') ? " tag:" . Arr::get($queryParams, 'category') : "");
+        $qFeatured =  $q . "is:featured" . $qCategory;
+        $qBlog = $q . "is:blog -is:featured" . $qCategory;
 
         // Preload blog posts
         $apiDocument = $this->getApiDocument($request, [
+            "page" => [
+                'offset' => 0,
+                'limit' => 23,
+            ],
             "filter" => [
-                "q" => $q
+                "q" => $qBlog
             ],
             "sort" => "-createdAt"
         ]);
 
+        $apiFeatured = $this->getApiDocument($request, [
+            "page" => [
+                'offset' => 0,
+                'limit' => 15,
+            ],
+            "filter" => [
+                "q" => $qFeatured
+            ],
+            "sort" => "-createdAt"
+        ]);
+
+        $featuredIds = [];
+        $apiFeatured->data = array_map(function ($d) use ($featuredIds) {
+            $d->attributes->isFeatured = true;
+            $featuredIds[$d->id] = $d->id;
+            return $d;
+        }, $apiFeatured->data);
+
         // Set payload
-        $document->payload['apiDocument'] = $apiDocument;
+        $document->payload['apiDocument'] = $apiFeatured;
+        $document->payload['apiDocument']->data = array_merge($apiFeatured->data, $apiDocument->data);
 
         return $document;
     }

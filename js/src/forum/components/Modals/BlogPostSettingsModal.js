@@ -143,6 +143,27 @@ export default class BlogPostSettingsModal extends Modal {
     );
 
     items.add(
+      'featured',
+      <div className="Form-group">
+        {Switch.component(
+          {
+            state: this.isFeatured() == true,
+            onchange: (val) => {
+              this.isFeatured(val);
+            },
+          },
+          [
+            <b>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.featured.title')}</b>,
+            <div className="helpText" style={{ fontWeight: 500 }}>
+              {app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.featured.helper_text')}
+            </div>,
+          ]
+        )}
+      </div>,
+      -10
+    );
+
+    items.add(
       'submit',
       <div className="Form-group">
         {Button.component(

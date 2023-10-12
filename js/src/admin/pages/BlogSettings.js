@@ -28,6 +28,8 @@ export default class BlogSettings extends ExtensionPage {
     this.featuredCount = app.data.settings.blog_featured_count ?? 3;
     this.blogAddHero = app.data.settings.blog_add_hero ?? true;
 
+    this.htmlSideBar = app.data.settings.blog_html_sidebar ?? null;
+
     app.forum.data.attributes.blog_default_imageUrl = `${app.forum.attribute('baseUrl')}/assets/${app.data.settings.blog_default_image_path}`;
   }
 
@@ -119,17 +121,15 @@ export default class BlogSettings extends ExtensionPage {
               ),
 
               <div className="Form-group">
-                {<label>{app.translator.trans('v17development-flarum-blog.admin.settings.featured_count_label')}</label>}
-                <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.featured_count_text')}</div>
-                <input
+                {<label>{app.translator.trans('v17development-flarum-blog.admin.settings.html_sidebar_label')}</label>}
+                <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.html_sidebar_text')}</div>
+                <textarea
                   class="FormControl"
-                  value={this.featuredCount}
+                  value={this.htmlSideBar}
                   oninput={(e) => {
-                    this.featuredCount = e.target.value;
+                    this.htmlSideBar = e.target.value;
                     this.hasChanges = true;
                   }}
-                  placeholder="3"
-                  type="number"
                 />
               </div>,
             ]
@@ -267,6 +267,7 @@ export default class BlogSettings extends ExtensionPage {
       blog_filter_discussion_list: this.hideOnDiscussionList,
       blog_featured_count: this.featuredCount,
       blog_add_hero: this.blogAddHero,
+      blog_html_sidebar: this.htmlSideBar,
     })
       .then(() => {
         this.hasChanges = false;

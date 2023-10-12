@@ -9,6 +9,7 @@ import LanguageDropdown from '../components/LanguageDropdown/LanguageDropdown';
 import ForumNav from '../components/ForumNav';
 import BlogOverviewItem from '../components/BlogOverviewItem';
 import FeaturedBlogItem from '../components/FeaturedBlogItem';
+import BlogCrudeSide from '../components/BlogCrudeSide';
 
 export default class BlogOverview extends Page {
   oninit(vnode) {
@@ -21,8 +22,6 @@ export default class BlogOverview extends Page {
     this.isLoading = true;
     this.featuredPosts = [];
     this.posts = [];
-    this.hasMore = null;
-    this.isLoadingMore = false;
 
     this.languages = app.store.all('discussion-languages');
 
@@ -37,18 +36,55 @@ export default class BlogOverview extends Page {
 
     this.showCategories = true;
     this.showForumNav = true;
+
+
+    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 10000);
+  }
+
+  scroll(direction) {
+    clearTimeout(this.scrollTimeout);
+    let list = document.querySelector('.BlogFeatured-list');
+    let item = document.querySelector('.BlogFeatured-list-item');
+    let maxScroll = list.scrollWidth - list.clientWidth;
+    let scrollAvailable = maxScroll - list.scrollLeft;
+
+    if (direction > 0 && scrollAvailable < item.clientWidth) {
+      list.scrollLeft = 0;
+    }
+
+    switch (true) {
+      case direction > 0 && scrollAvailable < item.clientWidth:
+        list.scrollLeft = 0;
+        break;
+      case direction < 0 && scrollAvailable == maxScroll:
+        list.scrollLeft = maxScroll;
+        break;
+      default:
+        list.scrollLeft += direction * (item.clientWidth + 20);
+        break;
+    }
+
+    this.scrollTimeout =  setTimeout(this.scroll.bind(this, 1), 5000);
   }
 
   // Load blog overview
   loadBlogOverview() {
     const preloadBlogOverview = app.preloadedApiDocument();
-
     if (preloadBlogOverview) {
       // We must wrap this in a setTimeout because if we are mounting this
       // component for the first time on page load, then any calls to m.redraw
       // will be ineffective and thus any configs (scroll code) will be run
       // before stuff is drawn to the page.
-      setTimeout(this.show.bind(this, preloadBlogOverview), 0);
+      let featured = [];
+      let normal = [];
+      preloadBlogOverview.forEach(entry => {
+        if (entry.data.attributes.isFeatured) {
+          featured.push(entry);
+        } else {
+          normal.push(entry);
+        };
+      });
+      setTimeout(this.show.bind(this, normal, featured), 0);
     } else {
       this.reloadData();
     }
@@ -57,62 +93,67 @@ export default class BlogOverview extends Page {
   }
 
   reloadData() {
-    let q = `is:blog${m.route.param('slug') ? ` tag:${m.route.param('slug')}` : ''}`;
+    let normalQ = `-is:featured is:blog${m.route.param('slug') ? ` tag:${m.route.param('slug')}` : ''}`;
+    let featuredQ = `is:featured is:blog${m.route.param('slug') ? ` tag:${m.route.param('slug')}` : ''}`;
 
     if (this.languages !== null && this.languages.length >= 1) {
-      q += ` language:${this.currentSelectedLanguage}`;
+      normalQ += ` language:${this.currentSelectedLanguage}`;
+      featuredQ += ` language:${this.currentSelectedLanguage}`;
     }
-
-    app.store
-      .find('discussions', {
-        filter: {
-          q,
-        },
-        sort: '-createdAt',
-      })
-      .then(this.show.bind(this))
-      .catch(() => {
-        m.redraw();
-      });
+    this.isLoading = true;
+    let normalPromise = app.store.find('discussions', {
+      page: {
+        page: 1,
+        limit: 23,
+      },
+      filter: {
+        q: normalQ,
+      },
+      sort: '-createdAt',
+    });
+    let featuredPromise = app.store.find('discussions', {
+      page: {
+        page: 1,
+        limit: 15,
+      },
+      filter: {
+        q: featuredQ,
+      },
+      sort: '-createdAt',
+    });
+    let promises = [
+      normalPromise,
+      featuredPromise,
+    ];
+    Promise.all(promises).then(values => {
+      setTimeout(this.show.bind(this, values[0], values[1]), 0);
+    });
   }
 
   // Show blog posts
-  show(articles) {
-    if (articles.length === 0) {
+  show(articles, featured) {
+    if (articles.length === 0 && featured.length === 0) {
       this.isLoading = false;
       m.redraw();
-
       return;
+    }
+    if (featured.length < 3) {
+      let needed = 3 - featured.length;
+      featured = featured.concat(articles.splice(0, needed));
+    }
+    if (articles.length > 20) {
+      articles.splice(19);
     }
 
     // Set pagination
-    this.hasMore = articles.payload.links && articles.payload.links.next ? articles.payload.links.next : null;
+    this.hasMore = false;
 
-    this.featuredPosts = articles.slice(0, this.featuredCount);
-    this.posts = articles.length > this.featuredCount ? articles.slice(this.featuredCount, articles.length) : [];
+    this.featuredPosts = featured;
+    this.posts = articles;
 
     this.isLoading = false;
 
     m.redraw();
-  }
-
-  // Load more blog posts
-  loadMore() {
-    this.isLoadingMore = true;
-
-    app.store
-      .find(this.hasMore.replace(app.forum.attribute('apiUrl'), ''))
-      .then((data) => {
-        data.map((article) => this.posts.push(article));
-
-        // Update hasmore button
-        this.hasMore = data.payload.links && data.payload.links.next ? data.payload.links.next : null;
-      })
-      .catch(() => {})
-      .then(() => {
-        this.isLoadingMore = false;
-        m.redraw();
-      });
   }
 
   title() {
@@ -168,28 +209,32 @@ export default class BlogOverview extends Page {
 
             {this.title()}
 
-            <div style={{ clear: 'both' }} />
+            <div class="BlogFeatured-carousel">
+              <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(-1)} icon={'fas fa-arrow-left'}> </Button>
+              <div class="BlogFeatured-list">
+                {/* Ghost data */}
+                {this.isLoading &&
+                  [...new Array(3).fill(undefined)].map(() => (
+                    <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
+                      <div class="BlogFeatured-list-item-details">
+                        <h4>&nbsp;</h4>
 
-            <div class="BlogFeatured-list">
-              {/* Ghost data */}
-              {this.isLoading &&
-                [...new Array(this.featuredCount).fill(undefined)].map(() => (
-                  <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
-                    <div class="BlogFeatured-list-item-details">
-                      <h4>&nbsp;</h4>
-
-                      <div class="data">
-                        <span>
-                          <i class="far fa-wave" />
-                        </span>
+                        <div class="data">
+                          <span>
+                            <i class="far fa-wave" />
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
-              {!this.isLoading &&
-                this.featuredPosts.length >= 0 &&
-                this.featuredPosts.map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />)}
+                {!this.isLoading &&
+                  this.featuredPosts.length >= 0 &&
+                  this.featuredPosts.map(
+                    (article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
+                  )}
+              </div>
+              <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(1)} icon={'fas fa-arrow-right'}> </Button>
             </div>
           </div>
 
@@ -217,25 +262,10 @@ export default class BlogOverview extends Page {
               {!this.isLoading &&
                 this.posts.length >= 1 &&
                 this.posts.map((article) => <BlogOverviewItem article={article} defaultImage={defaultImage} />)}
-
-              {!this.isLoading && this.featuredPosts.length > 0 && this.hasMore === null && (
-                <p className={'FlarumBlog-reached-end'}>{app.translator.trans('v17development-flarum-blog.forum.no_more_posts')}</p>
-              )}
-
-              {!this.isLoading && this.featuredPosts.length === 0 && this.posts.length === 0 && (
-                <p className={'FlarumBlog-reached-end'}>{app.translator.trans('v17development-flarum-blog.forum.category_empty')}</p>
-              )}
-
-              {!this.isLoading && this.hasMore !== null && (
-                <div className={'FlarumBlog-reached-load-more'}>
-                  <Button className={'Button'} onclick={() => this.loadMore()} icon={'fas fa-chevron-down'} loading={this.isLoadingMore}>
-                    {app.translator.trans('core.forum.discussion_list.load_more_button')}
-                  </Button>
-                </div>
-              )}
             </div>
 
             <div className={'Sidebar'}>
+              {<BlogCrudeSide/>}
               {this.showCategories && <BlogCategories />}
               {this.showForumNav && <ForumNav />}
             </div>
