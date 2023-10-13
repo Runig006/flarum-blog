@@ -75,7 +75,7 @@ class BlogOverviewController
         ]);
 
         $featuredIds = [];
-        if ($apiFeatured) {
+        if ($apiFeatured && $apiFeatured->data) {
             $apiFeatured->data = array_map(function ($d) use ($featuredIds) {
                 $d->attributes->isFeatured = true;
                 $featuredIds[$d->id] = $d->id;
