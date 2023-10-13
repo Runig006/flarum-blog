@@ -75,16 +75,17 @@ class BlogOverviewController
         ]);
 
         $featuredIds = [];
-        $apiFeatured->data = array_map(function ($d) use ($featuredIds) {
-            $d->attributes->isFeatured = true;
-            $featuredIds[$d->id] = $d->id;
-            return $d;
-        }, $apiFeatured->data);
-
-        // Set payload
-        $document->payload['apiDocument'] = $apiFeatured;
-        $document->payload['apiDocument']->data = array_merge($apiFeatured->data, $apiDocument->data);
-
+        if ($apiFeatured) {
+            $apiFeatured->data = array_map(function ($d) use ($featuredIds) {
+                $d->attributes->isFeatured = true;
+                $featuredIds[$d->id] = $d->id;
+                return $d;
+            }, $apiFeatured->data);
+            $document->payload['apiDocument'] = $apiFeatured;
+            $document->payload['apiDocument']->data = array_merge($apiFeatured->data, $apiDocument->data);
+        } else {
+            $document->payload['apiDocument'] = $apiDocument;
+        }
         return $document;
     }
 
