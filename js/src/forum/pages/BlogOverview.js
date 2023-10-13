@@ -73,7 +73,7 @@ export default class BlogOverview extends Page {
   // Load blog overview
   loadBlogOverview() {
     const preloadBlogOverview = app.preloadedApiDocument();
-    if (preloadBlogOverview) {
+    if (preloadBlogOverview && Array.isArray(preloadBlogOverview) && preloadBlogOverview.length > 0) {
       // We must wrap this in a setTimeout because if we are mounting this
       // component for the first time on page load, then any calls to m.redraw
       // will be ineffective and thus any configs (scroll code) will be run
