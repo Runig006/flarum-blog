@@ -14,6 +14,8 @@ import addSidebarNav from './utils/addSidebarNav';
 import BlogItem from './pages/BlogItem';
 import addPreferences from './utils/addPreferences';
 import UserCard from './components/UserCard';
+import AddScoreButton from './components/AddScoreButton';
+import AddButtons from './components/AddButtons';
 
 // Register Flarum Blog
 app.initializers.add(
@@ -58,6 +60,7 @@ app.initializers.add(
 
     addPreferences();
     UserCard();
+    AddButtons();
   },
   -100000
 );

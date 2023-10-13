@@ -40,6 +40,9 @@ export default class BlogOverview extends Page {
 
     this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 10000);
   }
+  onremove(vNode){
+    clearTimeout(this.scrollTimeout);
+  }
 
   scroll(direction) {
     clearTimeout(this.scrollTimeout);

@@ -3,6 +3,8 @@
 namespace V17Development\FlarumBlog;
 
 // Flarum classes
+
+use Exception;
 use Flarum\Api\Controller as FlarumController;
 use Flarum\Api\Serializer\BasicDiscussionSerializer;
 use Flarum\Api\Serializer\ForumSerializer;
@@ -41,6 +43,9 @@ use V17Development\FlarumBlog\Query\FeaturedArticleFilterGambit;
 
 use Flarum\Extend\User as ExtendUser;
 use Flarum\Api\Serializer\UserSerializer;
+
+use s9e\TextFormatter\Configurator;
+use V17Development\FlarumBlog\Formatter\ScoreFormatter;
 
 return [
     (new Extend\Frontend('forum'))
@@ -113,6 +118,10 @@ return [
             $attributes['blogName'] = $user->getPreference('blogName');
             $attributes['blogImage'] = $user->getPreference('blogImage');
             return $attributes;
-        })
+        }),
+
+    (new Extend\Formatter())
+        ->configure(ScoreFormatter::class)
+
 
 ];

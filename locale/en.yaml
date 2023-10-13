@@ -102,6 +102,11 @@ v17development-flarum-blog:
       no_blog_tags_selected: "None of the tags you have selected is a blog tag. Please select at least one."
       post_without_blog_info: "Are you sure you want to post this blog post? You did not yet enter a blog summary or image."
 
+    buttons:
+      score_tooltip: "Add a scoring circle"
+      review_tooltip: "Add a review style text"
+
+
     article_settings:
       title: Blog post settings
 

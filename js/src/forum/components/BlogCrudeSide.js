@@ -5,7 +5,6 @@ export default class BlogCrudeSide extends Component {
   oninit(vnode) {
     super.oninit(vnode);
     this.htmlSidebar = app.forum.attribute('htmlSideBar');
-    console.log(this.htmlSidebar);
   }
 
   view() {

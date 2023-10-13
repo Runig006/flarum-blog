@@ -1,0 +1,136 @@
+v17development-flarum-blog:
+  admin:
+    blog: "Blog"
+
+    permissions:
+      write_articles: "Escribir y editar articulos"
+      auto_approve_posts: "Escrir articulos sin aprovación"
+      approve_posts: "Puede aprobar articulos"
+
+    settings:
+      no_categories_selected: "No hay categorias seleccionadas"
+      selected_category_count: "{count, plural, one {You have # category selected} other {You have # categories selected}}"
+      select_categories_button: "Select blog categories"
+      blog_heading: "Blog"
+      featured_count_label: Max Featured Posts
+      featured_count_text: How many posts should be displayed in a big grid at the top of a blog page?
+      allow_comments_label: "Allow comments"
+      allow_comments_text: "By default, allow comments on blog posts. When disabled, it can be enabled individually per blog post. <b>Note:</b> Changing this setting will not affect pre-existing blog posts."
+      require_review_label: "Blog posts requires review"
+      require_review_text: "When posting an article, it will not be visible directly and needs to be reviewed by a moderator."
+      hide_on_discussion_list_label: "Don't show on discussion list"
+      hide_on_discussion_list_text: "Hide blog posts from the discussions list."
+      add_sidebar_nav_label: "Add to sidebar navigation"
+      add_sidebar_nav_text: "Include a link to the blog on the sidebar nav menu."
+      categories_heading: "Categories"
+      hide_tags_in_taglist_label: "Hide tags in taglist"
+      hide_tags_in_taglist_text: "When enabled, this extension will hide the blog tags from your homepage."
+      show_tag_hierarchy_label: "Show tag hierarchy"
+      show_tag_hierarchy_text: "Add spacing to child-categories and give the category-list a hierarchy."
+      redirects_heading: "Redirects"
+      redirect_articles_label: "Redirect blog articles"
+      redirect_articles_text: "When enabled, this extension will redirect original discussion URLs to their blog URL."
+      redirect_tags_label: "Redirect blog tags"
+      redirect_tags_text: "When enabled, this extension redirects blog tag URLs to the blog category URL."
+      default_article_image_label: Default article image
+      default_article_image_text: Select a default article image to display when no image is set.
+      add_hero_label: Show welcome banner
+      add_hero_text: Show welcome banner on blog pages if it wasn't closed yet.
+      html_sidebar_label: Header Sidebar
+      html_sidebar_text: HTML to print on the top of the sidebar. RAW html, without any class apart of "BlogHtml"
+
+  forum:
+    blog: "Blog"
+    read_more: "Leer más"
+    hidden: "Oculto"
+    recent_posts: "Articulos recientes"
+    categories: "Categorias"
+    forum_nav: "Navegación"
+    return_to_overview: "Volver a vista de blog"
+    no_more_posts: "No hay más articulos"
+    category_empty: "No hay más articulos en esta categoria"
+
+    compose:
+      write_article: "Escribir articulo"
+
+    validation:
+      missing_id: "ID Faltante"
+
+    article:
+      title: "Titulo"
+      slug: "Slug"
+      summary: "Sumario"
+
+    comment_section:
+      comments: "Comentarios"
+      locked: "Los comentarios estan desactivados para esta noticia"
+
+    review_article:
+      pending_review_title: "Pendiente de revisión"
+      pending_review: "Este articulo esta pendiente de revisión y todavia no se ha publicado"
+      approve_article: "Articulado aprobado"
+      approve_article_approved: "Este articulo esta aprobado y publicado"
+
+    tools:
+      rename_article: "Renombrar articulo"
+      edit_article: "Editar articulo"
+      update_category: "Actualizar categorias"
+      article_settings: "Opciones del articulo"
+      approve_article: "Aprobar articulo"
+      hide_article: "Ocultar articulo"
+      recover_article: "Recuperar articulo"
+      delete_forever: "Borrar para siempre"
+      enable_comments: "Activar comentarios"
+      disable_comments: "Desactivar comentarios"
+
+    utils:
+      redirect:
+        title: "Redirigiendo a tu articulo..."
+        link: "<a>Pincha aquí</a> si la pagina no redirecciona"
+
+    composer:
+      no_title: "No hay titulo"
+      enter_message_here: "Introduce aquí tu mensaje"
+      post_article: "Publicar articulo"
+      select_category: "Seleccionar una categoria"
+      edit_categories: "Editar categorias"
+      update_settings: "Actualizar configuración del blog"
+      write: "Escribir"
+      view: "Ver"
+      nothing_to_preview: "Nada que previsualizar"
+      comment_section: "La sección de comentarios no esta disponible mientras escribes un articulo"
+      no_blog_tags_selected: "Ninguna de las etiquetas que has puesto son de blog"
+      post_without_blog_info: "¿Estas seguro de que quieres publicar esto? No has puesto ninguna imagen ni sumario"
+
+    buttons:
+      score_tooltip: "Añade una puntuación circular"
+      review_tooltip: "Añade una texto formateado como review"
+
+
+    article_settings:
+      title: Opciones del articulo
+
+      fields:
+        summary:
+          title: Sumario del Articulo
+          placeholder: Por favor introduce un sumario
+          helper_text: Este sumario se usara como texto corto para la home y para el seo
+
+        image:
+          title: Imagen del articulo
+          helper_text: "La mejor resolución suele ser 1200x630"
+
+        highlight:
+          title: Destacar articulo
+          helper_text: Este articulo tendra una foto más grande cuando salga en la lista de la home
+        
+        featured: 
+          title: Fijar articulo
+          helper_text: Este articulo se quedara en el carrusel superior
+    
+    user_settings:
+      settings: Opciones de Blog
+      name: Nombre
+      image: Imagen
+      save: Guardar opciones de blog
+      save_alert: Guardado :D

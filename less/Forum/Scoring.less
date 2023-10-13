@@ -1,0 +1,57 @@
+.review{
+    background-color: fade(@primary-color,20%);
+    color: contrast(fade(@primary-color,80%));
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    p{
+        margin-bottom: 0px;
+    }
+}
+
+
+/* Rating item */
+.scoring {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    overflow: hidden;
+
+    width: 10rem;
+    height: 10rem;
+
+    /* Basic style for the text */
+    font-size: 3rem;
+    line-height: 1;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    --bar-background: #c7e1f3;
+    --bar-red: red;
+    --bar-yellow: yellow;
+    --bar-green: green;
+}
+
+/* Rating circle content */
+.scoring span {
+    position: relative;
+    display: flex;
+    font-weight: bold;
+    z-index: 2;
+}
+
+/* Bar mask, creates an inner circle with the same color as thee background */
+.scoring::after {
+    content: "";
+    position: absolute;
+    inset: 1rem;
+    background: @body-bg;
+    border-radius: inherit;
+    z-index: 1;
+}
