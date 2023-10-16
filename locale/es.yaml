@@ -103,8 +103,9 @@ v17development-flarum-blog:
       post_without_blog_info: "¿Estas seguro de que quieres publicar esto? No has puesto ninguna imagen ni sumario"
 
     buttons:
-      score_tooltip: "Añade una puntuación circular"
-      review_tooltip: "Añade una texto formateado como review"
+      score_tooltip: "Añade una puntuación"
+      review_tooltip: "Selección como review"
+      center_tooltip: "Centrar selección"
 
 
     article_settings:

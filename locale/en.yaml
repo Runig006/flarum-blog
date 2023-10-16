@@ -104,7 +104,8 @@ v17development-flarum-blog:
 
     buttons:
       score_tooltip: "Add a scoring circle"
-      review_tooltip: "Add a review style text"
+      review_tooltip: "Style the selection as review"
+      center_tooltip: "Center a selection"
 
 
     article_settings:
