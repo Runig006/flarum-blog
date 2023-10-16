@@ -47,6 +47,7 @@ use Flarum\Api\Serializer\UserSerializer;
 use V17Development\FlarumBlog\Console\AutoValidateCommand;
 use V17Development\FlarumBlog\Console\AutoValidateSchedule;
 use V17Development\FlarumBlog\Formatter\ScoreFormatter;
+use V17Development\FlarumBlog\Query\PendingValidationGambit;
 
 return [
     (new Extend\Frontend('forum'))
@@ -105,10 +106,9 @@ return [
         ->addFilterMutator(FilterDiscussionsForBlogPosts::class),
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
-        ->addGambit(BlogArticleFilterGambit::class),
-
-    (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
-        ->addGambit(FeaturedArticleFilterGambit::class),
+        ->addGambit(BlogArticleFilterGambit::class)
+        ->addGambit(FeaturedArticleFilterGambit::class)
+        ->addGambit(PendingValidationGambit::class),
 
     (new ExtendUser())
         ->registerPreference('blogName', null, null)

@@ -49,6 +49,9 @@ v17development-flarum-blog:
     return_to_overview: "Volver a vista de blog"
     no_more_posts: "No hay más articulos"
     category_empty: "No hay más articulos en esta categoria"
+  
+    articles: "Articulos"
+    pending: "Articulos pendientes"
 
     compose:
       write_article: "Escribir articulo"
@@ -82,6 +85,7 @@ v17development-flarum-blog:
       delete_forever: "Borrar para siempre"
       enable_comments: "Activar comentarios"
       disable_comments: "Desactivar comentarios"
+      goto_blog: "Ir a la vista blog"
 
     utils:
       redirect:
