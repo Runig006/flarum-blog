@@ -25,6 +25,7 @@ export default class BlogPostSettingsModal extends Modal {
     this.isFeatured = Stream(this.meta.isFeatured() || false);
     this.isSized = Stream(this.meta.isSized() || false);
     this.isPendingReview = Stream(this.meta.isPendingReview() || false);
+    this.publishDate = Stream(this.meta.publishDate() || false);
   }
 
   className() {
@@ -163,6 +164,23 @@ export default class BlogPostSettingsModal extends Modal {
       -10
     );
 
+    if (app.forum.attribute('canApproveBlogPosts')) {
+      items.add(
+        'publishDate',
+        <div className="Form-group">
+          <label>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.publishDate.title')}:</label>
+          <input type="datetime-local"
+            className="FormControl"
+            bidi={this.publishDate}
+            placeholder={app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.publishDate')}
+          />
+          <small>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.publishDate.helper_text')}</small>
+      </div>,
+        -10
+      );
+    }
+
+
     items.add(
       'submit',
       <div className="Form-group">
@@ -188,6 +206,8 @@ export default class BlogPostSettingsModal extends Modal {
       isFeatured: this.isFeatured(),
       isSized: this.isSized(),
       isPendingReview: this.isPendingReview(),
+      publishDate: this.publishDate(),
+      
       relationships:
         this.isNew && !this.attrs.isComposer
           ? {

@@ -7,12 +7,22 @@ import Link from 'flarum/common/components/Link';
 export default class BlogAuthor extends Component {
   view() {
     const author = !this.attrs.loading ? (this.attrs.article ? this.attrs.article.user() : this.attrs.user) : null;
+    var background = null;
+    if (author && author.cover()) {
+      let coverUrl = author.cover();
+      if (coverUrl) {
+        background = `url(${coverUrl})`;
+      }
+    }
+
+
     return (
       <div className={'FlarumBlog-Article-Author'}>
         <div
           className={`FlarumBlog-Article-Author-background ${this.attrs.loading ? 'FlarumBlog-Author-Ghost' : ''}`}
           style={{
             backgroundColor: author && author.color() ? author.color() : null,
+            backgroundImage: background,
           }}
         />
 

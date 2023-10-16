@@ -4,6 +4,8 @@ namespace V17Development\FlarumBlog\BlogMeta\Commands;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Discussion\DiscussionRepository;
+use Flarum\Discussion\Event\Hidden;
+use Flarum\Discussion\Event\Started;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use V17Development\FlarumBlog\BlogMeta\BlogMeta;
@@ -75,6 +77,7 @@ class CreateBlogMetaHandler
         $blogMeta->summary = Arr::get($data, 'attributes.summary', null);
         $blogMeta->is_featured = Arr::get($data, 'attributes.isFeatured', false);
         $blogMeta->is_sized = Arr::get($data, 'attributes.isSized', false);
+        $blogMeta->is_sized = Arr::get($data, 'attributes.isSized', false);
 
         // Auto approve if an article already existed or it does not require a review
         if ($discussion->created_at->diffInSeconds(\Carbon\Carbon::now()) > 30 || $this->settings->get('blog_requires_review', false) == false) {
@@ -83,10 +86,19 @@ class CreateBlogMetaHandler
             $blogMeta->is_pending_review = !$actor->can('blog.autoApprovePosts');
         }
 
+        //If we have a publish date, dont give a fuck...is """pending review"""
+        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {
+            $blogMeta->is_pending_review = true;
+            $blogMeta->publish_date = Arr::get($data, 'attributes.publishDate', false);
+        }
+
         // Allow extensions to add their own attributes
         $this->dispatcher->dispatch(
             new BlogMetaSaving($blogMeta, $actor, $data)
         );
+        
+        $event = $blogMeta->is_pending_review ? Hidden::class : Started::class;
+        $this->dispatcher->dispatch(new $event($blogMeta->discussion, $actor));
 
         // Validate
         $this->validator->assertValid($blogMeta->getDirty());

@@ -127,6 +127,10 @@ v17development-flarum-blog:
         featured: 
           title: Fijar articulo
           helper_text: Este articulo se quedara en el carrusel superior
+
+        publishDate:
+          title: Fecha de publicación
+          helper_text: Fecha de Europa/Madrid en la cual el articulo pasara a estar automaticamente validado
     
     user_settings:
       settings: Opciones de Blog

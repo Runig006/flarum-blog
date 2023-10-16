@@ -5,6 +5,8 @@ namespace V17Development\FlarumBlog\BlogMeta\Commands;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Foundation\ValidationException;
 use Flarum\Discussion\DiscussionRepository;
+use Flarum\Discussion\Event\Hidden;
+use Flarum\Discussion\Event\Started;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use V17Development\FlarumBlog\BlogMeta\BlogMeta;
@@ -99,10 +101,18 @@ class UpdateBlogMetaHandler
             $blogMeta->is_pending_review = Arr::get($data, 'attributes.isPendingReview', false);
         }
 
+        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {
+            $blogMeta->is_pending_review = true;
+            $blogMeta->publish_date = Arr::get($data, 'attributes.publishDate', false);
+        }
+
         // Allow extensions to add their own attributes
         $this->dispatcher->dispatch(
             new BlogMetaSaving($blogMeta, $actor, $data)
         );
+
+        $event = $blogMeta->is_pending_review ? Hidden::class : Started::class;
+        $this->dispatcher->dispatch(new $event($blogMeta->discussion, $actor));
 
         // Validate
         $this->validator->assertValid($blogMeta->getDirty());

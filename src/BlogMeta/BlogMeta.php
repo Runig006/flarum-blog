@@ -19,7 +19,7 @@ class BlogMeta extends AbstractModel
         'discussion_id'
     ];
     
-    public static function build($discussionId, $featuredImage, $summary, $isFeatured, $isSized, $isPendingReview)
+    public static function build($discussionId, $featuredImage, $summary, $isFeatured, $isSized, $isPendingReview, $publishDate)
     {
         $blogMeta = new static();
         $blogMeta->discussion_id = $discussionId;
@@ -28,6 +28,7 @@ class BlogMeta extends AbstractModel
         $blogMeta->is_featured = $isFeatured;
         $blogMeta->is_sized = $isSized;
         $blogMeta->is_pending_review = $isPendingReview;
+        $blogMeta->publish_date = $publishDate;
 
         return $blogMeta;
     }

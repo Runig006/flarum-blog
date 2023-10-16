@@ -38,9 +38,22 @@ export default class BlogOverview extends Page {
     this.showForumNav = true;
 
 
-    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 10000);
+    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 5000);
+
+    //Yeah...hacky as fuck, but i dont know any other way
+    if (window.innerWidth <= 799) {
+      console.log("mobile");
+      var t = this;
+      setTimeout(function () {
+        if (document.getElementsByClassName('BlogFeatured-list')) {
+          document.getElementsByClassName('BlogFeatured-list')[0].addEventListener('touchmove', function () {
+            clearTimeout(t.scrollTimeout);
+          }, { once: true });
+        }
+      }, 1024);
+    }
   }
-  onremove(vNode){
+  onremove(vNode) {
     clearTimeout(this.scrollTimeout);
   }
 
@@ -67,7 +80,7 @@ export default class BlogOverview extends Page {
         break;
     }
 
-    this.scrollTimeout =  setTimeout(this.scroll.bind(this, 1), 5000);
+    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 5000);
   }
 
   // Load blog overview
@@ -268,7 +281,7 @@ export default class BlogOverview extends Page {
             </div>
 
             <div className={'Sidebar'}>
-              {<BlogCrudeSide/>}
+              {<BlogCrudeSide />}
               {this.showCategories && <BlogCategories />}
               {this.showForumNav && <ForumNav />}
             </div>

@@ -44,7 +44,8 @@ use V17Development\FlarumBlog\Query\FeaturedArticleFilterGambit;
 use Flarum\Extend\User as ExtendUser;
 use Flarum\Api\Serializer\UserSerializer;
 
-use s9e\TextFormatter\Configurator;
+use V17Development\FlarumBlog\Console\AutoValidateCommand;
+use V17Development\FlarumBlog\Console\AutoValidateSchedule;
 use V17Development\FlarumBlog\Formatter\ScoreFormatter;
 
 return [
@@ -121,7 +122,9 @@ return [
         }),
 
     (new Extend\Formatter())
-        ->configure(ScoreFormatter::class)
+        ->configure(ScoreFormatter::class),
 
-
+    (new Extend\Console())
+        ->command(AutoValidateCommand::class)
+        ->schedule(AutoValidateCommand::class, new AutoValidateSchedule()),
 ];
