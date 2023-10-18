@@ -57,7 +57,8 @@ class CreateBlogMetaOnDiscussionCreate
                     Arr::get($event->data, 'attributes.blogMeta.summary', null),
                     Arr::get($event->data, 'attributes.blogMeta.isFeatured', null),
                     Arr::get($event->data, 'attributes.blogMeta.isSized', null),
-                    $isPendingReview
+                    $isPendingReview,
+                    Arr::get($event->data, 'attributes.blogMeta.publishDate', null),
                 );
 
                 // Save meta
