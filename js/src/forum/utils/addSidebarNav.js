@@ -13,6 +13,7 @@ export default function addSidebarNav() {
         15
       );
     }
+    /*
     if (app.forum.attribute('canWriteBlogPosts')) {
       var blogsP = app.search.stickyParams();
       blogsP.filter = {
@@ -39,6 +40,7 @@ export default function addSidebarNav() {
         -10
       );
     }
+    */
     return items;
   });
 }
