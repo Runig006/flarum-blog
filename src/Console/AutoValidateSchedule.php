@@ -20,6 +20,6 @@ class AutoValidateSchedule
     {
         $event->onOneServer()
             ->withoutOverlapping()
-            ->everyFiveMinutes();
+            ->everyMinute();
     }
 }

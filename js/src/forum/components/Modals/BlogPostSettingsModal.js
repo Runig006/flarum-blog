@@ -175,7 +175,7 @@ export default class BlogPostSettingsModal extends Modal {
             placeholder={app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.publishDate')}
           />
           <small>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.publishDate.helper_text')}</small>
-      </div>,
+        </div>,
         -10
       );
     }
@@ -200,19 +200,20 @@ export default class BlogPostSettingsModal extends Modal {
   }
 
   submitData() {
+    console.log(Date.parse(this.publishDate()));
     return {
       summary: this.summary(),
       featuredImage: this.featuredImage(),
       isFeatured: this.isFeatured(),
       isSized: this.isSized(),
       isPendingReview: this.isPendingReview(),
-      publishDate: this.publishDate(),
-      
+      publishDate: Date.parse(this.publishDate()) ? this.publishDate() : null,
+
       relationships:
         this.isNew && !this.attrs.isComposer
           ? {
-              discussion: this.attrs.article,
-            }
+            discussion: this.attrs.article,
+          }
           : null,
     };
   }

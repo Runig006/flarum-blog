@@ -88,8 +88,10 @@ class CreateBlogMetaHandler
 
         //If we have a publish date, dont give a fuck...is """pending review"""
         if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {
-            $blogMeta->is_pending_review = true;
             $blogMeta->publish_date = Arr::get($data, 'attributes.publishDate', false);
+            if ($blogMeta->publish_date) {
+                $blogMeta->is_pending_review = true;
+            }
         }
 
         // Allow extensions to add their own attributes
