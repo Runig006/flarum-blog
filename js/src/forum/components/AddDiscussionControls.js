@@ -3,15 +3,31 @@ import app from 'flarum/forum/app';
 import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import BlogPostSettingsModal from './Modals/BlogPostSettingsModal';
 import Button from 'flarum/common/components/Button';
+import Tooltip from 'flarum/common/components/Tooltip';
+import icon from 'flarum/common/helpers/icon';
 
 export default function () {
     extend(DiscussionControls, 'userControls', function (items, discussion, context) {
-        if (!discussion || discussion.isHidden() || !('flarum-blog' in flarum.extensions || !!discussion.blogMeta())) {
+
+        // If the discussion is:
+        // - Not a discusion...yeah dont have a clue why
+        // - Is hidden
+        // - The blog extension is not enabled
+        // - This person cant write blogs
+        // Dont waste any time
+        if (!discussion || discussion.isHidden() || !'flarum-blog' in flarum.extensions || app.forum.attribute('canWriteBlogPosts') == false) {
             return;
         }
-        if (app.forum.attribute('canWriteBlogPosts') == false) {
+
+        // Find the tags that are "blog tags", find if this blog has any of that tags
+        const blogTags = app.forum.attribute('blogTags') || [];
+        const findblogTags = discussion.tags().filter((tag) => {
+            return blogTags.indexOf(tag.id()) >= 0;
+        });
+        if (findblogTags.length == 0) {
             return;
         }
+
         items.add('separator1', <li className="Dropdown-separator" />, -10);
         items.add(
             'gotoBlog',
@@ -33,7 +49,7 @@ export default function () {
             Button.component(
                 {
                     className: 'Button',
-                    onclick: () => app.modal.show(BlogPostSettingsModal, { discussion }),
+                    onclick: () => app.modal.show(BlogPostSettingsModal, { article:discussion }),
                     icon: 'fas fa-cogs',
                 },
                 app.translator.trans('v17development-flarum-blog.forum.tools.article_settings')
@@ -41,33 +57,37 @@ export default function () {
             -10
         );
 
-        if (app.forum.attribute('canApproveBlogPosts') && discussion.blogMeta().isPendingReview()) {
+        if (app.forum.attribute('canApproveBlogPosts') && (discussion.blogMeta() == false || discussion.blogMeta().isPendingReview())) {
+            let disabled = false;
+            let title = "";
+            if (discussion.blogMeta() == false) {
+                disabled = true;
+                title = app.translator.trans('v17development-flarum-blog.forum.tools.tooltip.missing_meta');
+            }
             items.add(
                 'approve',
-                Button.component(
-                    {
-                        className: 'Button',
-                        onclick: () => {
-                            discussion.blogMeta().save({
-                                isPendingReview: false,
-                            }).then(
-                                () => {
-                                    app.alerts.show(
-                                        Alert,
-                                        { type: 'success' },
-                                        app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article_approved')
-                                    );
-                                },
-                                (response) => {
-                                    this.loading = false;
-                                    this.handleErrors(response);
-                                }
-                            );
-                        },
-                        icon: 'fas fa-thumbs-up',
-                    },
-                    app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article')
-                ),
+                <Tooltip text={title}>
+                    <Button className='Button' icon='fas fa-thumbs-up' disabled={disabled} onclick={() => {
+                        discussion.blogMeta().save({
+                            isPendingReview: false,
+                        }).then(
+                            () => {
+                                app.alerts.show(
+                                    Alert,
+                                    { type: 'success' },
+                                    app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article_approved')
+                                );
+                            },
+                            (response) => {
+                                this.loading = false;
+                                this.handleErrors(response);
+                            }
+                        );
+                    }}
+                    >
+                        {app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article')}
+                    </Button>
+                </Tooltip>,
                 -10
             );
         }

@@ -87,6 +87,9 @@ v17development-flarum-blog:
       disable_comments: "Desactivar comentarios"
       goto_blog: "Ir a la vista blog"
 
+      tooltip:
+        missing_meta: "Esta noticia no cuenta con 'propiedades de blog'. Creelas y recarge la pagina"
+
     utils:
       redirect:
         title: "Redirigiendo a tu articulo..."
@@ -114,7 +117,6 @@ v17development-flarum-blog:
 
     article_settings:
       title: Opciones del articulo
-
       fields:
         summary:
           title: Sumario del Articulo

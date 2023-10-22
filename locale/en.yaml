@@ -86,6 +86,10 @@ v17development-flarum-blog:
       enable_comments: "Enable comments"
       disable_comments: "Disable comments"
       goto_blog: "Go to Blog View"
+      
+      tooltip:
+        missing_meta: "This news does not have 'blog properties'. Create them and reload the page"
+
 
     utils:
       redirect:

@@ -25,7 +25,7 @@ export default class BlogPostSettingsModal extends Modal {
     this.isFeatured = Stream(this.meta.isFeatured() || false);
     this.isSized = Stream(this.meta.isSized() || false);
     this.isPendingReview = Stream(this.meta.isPendingReview() || false);
-    this.publishDate = Stream(this.meta.publishDate() || false);
+    this.publishDate = Stream(this.meta.publishDate() || '');
   }
 
   className() {
@@ -200,7 +200,6 @@ export default class BlogPostSettingsModal extends Modal {
   }
 
   submitData() {
-    console.log(Date.parse(this.publishDate()));
     return {
       summary: this.summary(),
       featuredImage: this.featuredImage(),

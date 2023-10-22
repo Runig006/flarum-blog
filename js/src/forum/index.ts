@@ -16,6 +16,7 @@ import addPreferences from './utils/addPreferences';
 import UserCard from './components/UserCard';
 import AddDiscussionControls from './components/AddDiscussionControls';
 import AddEditorButtons from './components/AddEditorButtons';
+import AddBadges from './components/AddBadges';
 
 // Register Flarum Blog
 app.initializers.add(
@@ -63,6 +64,7 @@ app.initializers.add(
 
     AddEditorButtons();
     AddDiscussionControls();
+    AddBadges();
   },
   -100000
 );
