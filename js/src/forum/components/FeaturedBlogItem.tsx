@@ -41,11 +41,19 @@ export default class FeaturedBlogItem extends Component<Attrs> {
     }
 
     if (article.blogMeta()?.isPendingReview?.()) {
+      let title = app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review_title'); 
+      let text = app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review');
+      let iconName = "far fa-clock";
+      if (Date.parse(article.blogMeta().publishDate())) {
+        title = app.translator.trans('v17development-flarum-blog.forum.review_article.withdraw_review_title');
+        text = app.translator.trans('v17development-flarum-blog.forum.review_article.withdraw_review');
+        iconName = "far fa-calendar";
+      }
       items.add(
         'pendingReview',
-        <Tooltip text={app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review')} position="bottom">
+        <Tooltip text={text} position="bottom">
           <span class="BlogFeatured-list-item-pendingReview dataItem">
-            {icon('far fa-clock')} {app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review_title')}
+            {icon(iconName)}  {title}
           </span>
         </Tooltip>,
         40

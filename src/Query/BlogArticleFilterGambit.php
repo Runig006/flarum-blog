@@ -28,18 +28,26 @@ class BlogArticleFilterGambit extends AbstractRegexGambit
         return 'is:blog';
     }
 
+    public function getFilterKey(): string
+    {
+        return 'subscription';
+    }
+
     protected function conditions(SearchState $search, array $matches, $negate)
     {
         $tagsArray = explode("|", $this->settings->get('blog_tags', ''));
 
-        $search->getQuery()->where(function (Builder $query) use ($tagsArray, $negate) {
-            foreach ($tagsArray as $tagId) {
-                $query->orWhereIn('discussions.id', function (Builder $query) use ($tagId) {
-                    $query->select('discussion_id')
-                        ->from('discussion_tag')
-                        ->where('tag_id', $tagId);
-                }, $negate);
-            }
+        $search->getQuery()->where(function (Builder $query) use ($negate, $tagsArray) {
+            $query->whereIn('discussions.id', function (Builder $query) use ($tagsArray) {
+                $query->select('discussion_id')
+                    ->from('discussion_tag')
+                    ->whereIn('tag_id', $tagsArray);
+            },'and', $negate);
+            $query->whereIn('discussions.id', function (Builder $query) {
+                $query->select('discussion_id')
+                    ->from('blog_meta')
+                    ->where('is_pending_review', false);
+            }, 'and', $negate);
         });
     }
 }

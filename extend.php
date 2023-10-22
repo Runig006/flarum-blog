@@ -6,7 +6,7 @@ namespace V17Development\FlarumBlog;
 
 use Exception;
 use Flarum\Api\Controller as FlarumController;
-use Flarum\Api\Serializer\BasicDiscussionSerializer;
+use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Extend;
 use Flarum\Discussion\Discussion;
@@ -91,7 +91,7 @@ return [
     (new Extend\ApiController(FlarumController\UpdateDiscussionController::class))
         ->addInclude(['blogMeta', 'firstPost', 'user']),
 
-    (new Extend\ApiSerializer(BasicDiscussionSerializer::class))
+    (new Extend\ApiSerializer(DiscussionSerializer::class))
         ->hasOne('blogMeta', BlogMetaSerializer::class),
 
     (new Extend\ApiSerializer(ForumSerializer::class))
@@ -104,7 +104,8 @@ return [
         ->listen(Saving::class, CreateBlogMetaOnDiscussionCreate::class),
 
     (new Extend\Filter(DiscussionFilterer::class))
-        ->addFilterMutator(FilterDiscussionsForBlogPosts::class),
+        ->addFilterMutator(FilterDiscussionsForBlogPosts::class)
+        ->addFilter(PendingValidationGambit::class),
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
         ->addGambit(BlogArticleFilterGambit::class)

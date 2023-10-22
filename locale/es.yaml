@@ -71,6 +71,7 @@ v17development-flarum-blog:
     review_article:
       pending_review_title: "Pendiente de revisión"
       pending_review: "Este articulo esta pendiente de revisión y todavia no se ha publicado"
+      withdraw_review: "Este articulo esta pendiente de una fecha para ser publicado"
       approve_article: "Articulado aprobado"
       approve_article_approved: "Este articulo esta aprobado y publicado"
 
@@ -148,4 +149,7 @@ v17development-flarum-blog:
 
     badge: 
       blog: "Articulo"
-      pending: "Pendinte de autorizar/Con embargo"
+      pending: "Pendinte de autorizar"
+      pending_date: "Con embargo"
+      missing_meta: "Le falta las propiedades del blog"
+      

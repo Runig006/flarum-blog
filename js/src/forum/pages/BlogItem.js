@@ -152,20 +152,26 @@ export default class BlogItem extends Page {
 
     if (!this.loading) {
       if (this.article.blogMeta?.()?.isPendingReview?.()) {
+        let text = app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review');
+        let iconName = "far fa-clock";
+        if (Date.parse(this.article.blogMeta().publishDate())) {
+          text = app.translator.trans('v17development-flarum-blog.forum.review_article.withdraw_review');
+          iconName = "far fa-calendar";
+        }
+
         items.add(
           'review',
           <div className={'Post-body'}>
             <blockquote class="uncited" style={{ fontSize: '16px' }}>
               <div>
-                {icon('far fa-clock', { style: { marginRight: '5px' } })}{' '}
-                {app.translator.trans('v17development-flarum-blog.forum.review_article.pending_review')}
+                {icon(iconName, { style: { marginRight: '5px' } })}{' '}
+                {text}
               </div>
             </blockquote>
           </div>,
           60
         );
       }
-
       if (articlePost) {
         items.add('post', <CommentPost post={articlePost} />, 40);
       }

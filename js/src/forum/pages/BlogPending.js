@@ -34,10 +34,14 @@ export default function () {
     });
 
     extend(DiscussionListState.prototype, 'requestParams', function (params) {
-        if (this.params.onBlogPending) {
+        if (typeof params.include === 'string') {
+            params.include = [params.include];
+        } else {
+            params.include?.push('blogMeta', 'firstPost', 'user');
+        }
+        if (app.current.get('routeName') === 'blogPending') {
             params.filter = params.filter ?? {};
-            params.filter.q = params.filter.q ?? "";
-            params.filter.q += ' is:pending';
+            params.filter.blogpending = 1;
         }
     });
 }

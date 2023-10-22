@@ -71,6 +71,8 @@ v17development-flarum-blog:
     review_article:
       pending_review_title: "Pending review"
       pending_review: "This article is pending review and has not yet been published"
+      withdraw_review_title: "Waiting date"
+      withdraw_review: "This article is pending a date to be published"
       approve_article: "Approve article"
       approve_article_approved: "The article has been approved and published"
 
@@ -150,4 +152,6 @@ v17development-flarum-blog:
 
     badge: 
       blog: "Article"
-      pending: "Pending authorization/Withholding"
+      pending: "Pending authorization"
+      pending_date: "Withholding"
+      missing_meta: "Missing blog properties"

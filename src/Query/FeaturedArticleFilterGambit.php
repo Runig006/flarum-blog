@@ -25,7 +25,8 @@ class FeaturedArticleFilterGambit extends AbstractRegexGambit
             $query->whereIn('discussions.id', function (Builder $query) {
                 $query->select('discussion_id')
                     ->from('blog_meta')
-                    ->where('is_featured', true);
+                    ->where('is_featured', true)
+                    ->where('is_pending_review', false);
             }, 'and', $negate);
         });
     }
