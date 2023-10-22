@@ -55,6 +55,7 @@ return [
         ->css(__DIR__ . '/less/Forum.less')
         ->route('/blog', 'blog.overview', BlogOverviewController::class)
         ->route('/blog/compose', 'blog.compose', BlogComposerController::class)
+        ->route('/blog/pending', 'blog.pending')
         ->route('/blog/category/{category}', 'blog.category', BlogOverviewController::class)
         ->route('/blog/{id:[\d\S]+(?:-[^/]*)?}', 'blog.post', BlogItemController::class)
     // Shall we add RSS?

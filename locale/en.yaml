@@ -147,3 +147,7 @@ v17development-flarum-blog:
       image: Image
       save: Save Blog Options
       save_alert: Saved :D
+
+    badge: 
+      blog: "Article"
+      pending: "Pending authorization/Withholding"

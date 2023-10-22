@@ -94,7 +94,7 @@ v17development-flarum-blog:
       redirect:
         title: "Redirigiendo a tu articulo..."
         link: "<a>Pincha aquí</a> si la pagina no redirecciona"
-
+  
     composer:
       no_title: "No hay titulo"
       enter_message_here: "Introduce aquí tu mensaje"
@@ -145,3 +145,7 @@ v17development-flarum-blog:
       image: Imagen
       save: Guardar opciones de blog
       save_alert: Guardado :D
+
+    badge: 
+      blog: "Articulo"
+      pending: "Pendinte de autorizar/Con embargo"

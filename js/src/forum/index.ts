@@ -2,6 +2,8 @@ import app from 'flarum/forum/app';
 import Model from 'flarum/common/Model';
 import Tag from 'flarum/tags/common/models/Tag';
 import Discussion from 'flarum/common/models/Discussion';
+import IndexPage from 'flarum/forum/components/IndexPage';
+
 import BlogOverview from './pages/BlogOverview';
 import redirector from './utils/redirector';
 import BlogMeta from '../common/Models/BlogMeta';
@@ -17,6 +19,9 @@ import UserCard from './components/UserCard';
 import AddDiscussionControls from './components/AddDiscussionControls';
 import AddEditorButtons from './components/AddEditorButtons';
 import AddBadges from './components/AddBadges';
+import BlogPending from './pages/BlogPending';
+
+
 
 // Register Flarum Blog
 app.initializers.add(
@@ -32,6 +37,11 @@ app.initializers.add(
     app.routes.blogComposer = {
       path: '/blog/compose',
       component: BlogComposer,
+    };
+
+    app.routes.blogPending = {
+      path: '/blog/pending',
+      component: IndexPage,
     };
 
     app.routes.blogArticle = { path: '/blog/:id', component: BlogItem };
@@ -65,6 +75,8 @@ app.initializers.add(
     AddEditorButtons();
     AddDiscussionControls();
     AddBadges();
+    
+    BlogPending();
   },
   -100000
 );
