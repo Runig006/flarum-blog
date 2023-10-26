@@ -141,7 +141,7 @@ v17development-flarum-blog:
 
         publishDate:
           title: Publish Date
-          helper_text: Date in the time zone of Europe/Madrid on which the item will be automatically validated.
+          helper_text: Date on which the item will be automatically validated.
     
     user_settings:
       settings: Blog Settings

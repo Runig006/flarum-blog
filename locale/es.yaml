@@ -138,7 +138,7 @@ v17development-flarum-blog:
 
         publishDate:
           title: Fecha de publicación
-          helper_text: Fecha de Europa/Madrid en la cual el articulo pasara a estar automaticamente validado
+          helper_text: Fecha en la cual el articulo pasara a estar automaticamente validado
     
     user_settings:
       settings: Opciones de Blog
