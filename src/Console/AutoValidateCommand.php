@@ -25,18 +25,17 @@ class AutoValidateCommand extends Command
 
     public function handle(Dispatcher $dispatcher)
     {
-        //TODO allow timezones
         $blogs = BlogMeta::with('discussion')->where('is_pending_review', 1)->whereNotNull('publish_date')->where('publish_date', '<=', Carbon::now())->get();
         foreach ($blogs as $b) {
             $discussion = $b->discussion;
             if ($discussion->comment_count < 2) {
                 $discussion->timestamps = false;
-                $discussion->created_at = Carbon::now();
+                $discussion->created_at = $b->is_pending_review;
                 $discussion->save();
 
                 $firstPost = $discussion->firstPost;
                 $firstPost->timestamps = false;
-                $firstPost->created_at = Carbon::now();
+                $firstPost->created_at = $b->is_pending_review;
                 $firstPost->save();
             }
 
