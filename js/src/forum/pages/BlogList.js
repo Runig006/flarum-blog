@@ -8,22 +8,20 @@ import GlobalSearchState from 'flarum/forum/states/GlobalSearchState';
 export default function () {
 
     extend(IndexPage.prototype, 'navItems', function (items) {
-        if (app.session.user && app.forum.attribute('canApproveBlogPosts')) {
-            const params = app.search.stickyParams();
+        const params = app.search.stickyParams();
 
-            items.add(
-                'blogPending',
-                <LinkButton href={app.route('blogPending', params)} icon="fas fa-clock">
-                    {app.translator.trans('v17development-flarum-blog.forum.pending')}
-                </LinkButton>,
-                50
-            );
-        }
+        items.add(
+            'blogList',
+            <LinkButton href={app.route('blogList', params)} icon="fas fa-newspaper">
+                {app.translator.trans('v17development-flarum-blog.forum.articles')}
+            </LinkButton>,
+            50
+        );
     });
 
     extend(IndexPage.prototype, 'setTitle', function () {
-        if (app.current.get('routeName') === 'blogPending') {
-            app.setTitle(app.translator.trans('v17development-flarum-blog.forum.pending'));
+        if (app.current.get('routeName') === 'blogList') {
+            app.setTitle(app.translator.trans('v17development-flarum-blog.forum.articles'));
         }
     });
 
@@ -33,9 +31,9 @@ export default function () {
         } else {
             params.include?.push('blogMeta', 'firstPost', 'user');
         }
-        if (app.current.get('routeName') === 'blogPending') {
+        if (app.current.get('routeName') === 'blogList') {
             params.filter = params.filter ?? {};
-            params.filter.blogpending = 1;
+            params.filter.blog = 1;
         }
     });
 }

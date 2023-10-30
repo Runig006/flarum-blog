@@ -56,6 +56,7 @@ return [
         ->route('/blog', 'blog.overview', BlogOverviewController::class)
         ->route('/blog/compose', 'blog.compose', BlogComposerController::class)
         ->route('/blog/pending', 'blog.pending')
+        ->route('/blog/list', 'blog.list')
         ->route('/blog/category/{category}', 'blog.category', BlogOverviewController::class)
         ->route('/blog/{id:[\d\S]+(?:-[^/]*)?}', 'blog.post', BlogItemController::class)
     // Shall we add RSS?
@@ -105,7 +106,8 @@ return [
 
     (new Extend\Filter(DiscussionFilterer::class))
         ->addFilterMutator(FilterDiscussionsForBlogPosts::class)
-        ->addFilter(PendingValidationGambit::class),
+        ->addFilter(PendingValidationGambit::class)
+        ->addFilter(BlogArticleFilterGambit::class),
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
         ->addGambit(BlogArticleFilterGambit::class)

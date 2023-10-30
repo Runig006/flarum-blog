@@ -20,7 +20,7 @@ import AddDiscussionControls from './components/AddDiscussionControls';
 import AddEditorButtons from './components/AddEditorButtons';
 import AddBadges from './components/AddBadges';
 import BlogPending from './pages/BlogPending';
-
+import BlogList from './pages/BlogList';
 
 
 // Register Flarum Blog
@@ -41,6 +41,11 @@ app.initializers.add(
 
     app.routes.blogPending = {
       path: '/blog/pending',
+      component: IndexPage,
+    };
+
+    app.routes.blogList = {
+      path: '/blog/list',
       component: IndexPage,
     };
 
@@ -77,6 +82,7 @@ app.initializers.add(
     AddBadges();
     
     BlogPending();
+    BlogList();
   },
   -100000
 );

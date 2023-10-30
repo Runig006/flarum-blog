@@ -29,11 +29,6 @@ class CreateBlogMetaOnDiscussionCreate
     {
         $discussion = $event->discussion;
 
-        // Only add blog meta data if the discussion does not exists yet
-        if($discussion->exists) {
-            return;
-        }
-
         // After the tags are synced, check if it's a blog article
         $discussion->afterSave(function ($discussion) use ($event) {
 
@@ -43,7 +38,7 @@ class CreateBlogMetaOnDiscussionCreate
             $discussion->load('tags');
 
             // Make sure it's a blog base discussion!
-            if ($discussion->tags && $discussion->tags->whereIn('id', $this->blogTags)->count() > 0) {
+            if ($discussion->blogMeta == null && $discussion->tags && $discussion->tags->whereIn('id', $this->blogTags)->count() > 0) {
                 if(!$event->actor->can('blog.writeArticles')) {
                     throw new PermissionDeniedException;
                 }

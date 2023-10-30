@@ -2,12 +2,15 @@
 
 namespace V17Development\FlarumBlog\Query;
 
+use Flarum\User\User;
+use Flarum\Filter\FilterInterface;
+use Flarum\Filter\FilterState;
 use Flarum\Search\AbstractRegexGambit;
 use Flarum\Search\SearchState;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Database\Query\Builder;
 
-class BlogArticleFilterGambit extends AbstractRegexGambit
+class BlogArticleFilterGambit extends AbstractRegexGambit implements FilterInterface
 {
     /**
      * @var SettingsRepositoryInterface
@@ -30,14 +33,24 @@ class BlogArticleFilterGambit extends AbstractRegexGambit
 
     public function getFilterKey(): string
     {
-        return 'subscription';
+        return 'blog';
     }
 
     protected function conditions(SearchState $search, array $matches, $negate)
     {
+        $this->buildQuery($search->getQuery(), $search->getActor(), $negate);
+    }
+
+    public function filter(FilterState $filterState, $filterValue, bool $negate)
+    {
+        $this->buildQuery($filterState->getQuery(), $filterState->getActor(), $negate);
+    }
+
+    protected function buildQuery(Builder $query, User $actor, bool $negate)
+    {
         $tagsArray = explode("|", $this->settings->get('blog_tags', ''));
 
-        $search->getQuery()->where(function (Builder $query) use ($negate, $tagsArray) {
+        $query->where(function (Builder $query) use ($negate, $tagsArray) {
             $query->whereIn('discussions.id', function (Builder $query) use ($tagsArray) {
                 $query->select('discussion_id')
                     ->from('discussion_tag')
