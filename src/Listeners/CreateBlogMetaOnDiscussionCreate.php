@@ -39,7 +39,7 @@ class CreateBlogMetaOnDiscussionCreate
 
             // Make sure it's a blog base discussion!
             if ($discussion->blogMeta == null && $discussion->tags && $discussion->tags->whereIn('id', $this->blogTags)->count() > 0) {
-                if(!$event->actor->can('blog.writeArticles')) {
+                if (!$event->actor->can('blog.writeArticles')) {
                     throw new PermissionDeniedException;
                 }
 
@@ -60,10 +60,12 @@ class CreateBlogMetaOnDiscussionCreate
                 $blogMeta->save();
 
                 // Autolock articles
-                if($this->settings->get('blog_allow_comments', true) == false) {
+                if ($this->settings->get('blog_allow_comments', true) == false) {
                     $discussion->is_locked = true;
                     $discussion->save();
                 }
+            } else if ($discussion->blogMeta != null && $discussion->tags && $discussion->tags->whereIn('id', $this->blogTags)->count() == 0) {
+                $discussion->blogMeta->delete();
             }
         });
     }
