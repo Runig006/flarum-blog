@@ -99,7 +99,6 @@ export default class FeaturedBlogItem extends Component<Attrs> {
     const { article, defaultImage } = this.attrs;
 
     const blogImage = article.blogMeta()?.featuredImage?.() ? `url(${article.blogMeta().featuredImage()})` : defaultImage;
-
     return (
       <Link
         href={app.route('blogArticle', {

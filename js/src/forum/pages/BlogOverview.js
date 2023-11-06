@@ -278,6 +278,14 @@ export default class BlogOverview extends Page {
               {!this.isLoading &&
                 this.posts.length >= 1 &&
                 this.posts.map((article) => <BlogOverviewItem article={article} defaultImage={defaultImage} />)}
+              
+              <div class="Form--centered">
+                <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
+                  <Button class={'Button'}>
+                    {app.translator.trans('v17development-flarum-blog.forum.read_more')}
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div className={'Sidebar'}>
