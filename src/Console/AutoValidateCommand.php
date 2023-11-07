@@ -30,12 +30,12 @@ class AutoValidateCommand extends Command
             $discussion = $b->discussion;
             if ($discussion->comment_count < 2) {
                 $discussion->timestamps = false;
-                $discussion->created_at = $b->is_pending_review;
+                $discussion->created_at = $b->publish_date;
                 $discussion->save();
 
                 $firstPost = $discussion->firstPost;
                 $firstPost->timestamps = false;
-                $firstPost->created_at = $b->is_pending_review;
+                $firstPost->created_at = $b->publish_date;
                 $firstPost->save();
             }
 
