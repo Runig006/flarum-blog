@@ -46,6 +46,7 @@ use Flarum\Api\Serializer\UserSerializer;
 
 use V17Development\FlarumBlog\Console\AutoValidateCommand;
 use V17Development\FlarumBlog\Console\AutoValidateSchedule;
+use V17Development\FlarumBlog\Formatter\ReviewFormatter;
 use V17Development\FlarumBlog\Formatter\ScoreFormatter;
 use V17Development\FlarumBlog\Query\PendingValidationGambit;
 
