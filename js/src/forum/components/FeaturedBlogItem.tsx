@@ -17,9 +17,7 @@ interface Attrs {
 export default class FeaturedBlogItem extends Component<Attrs> {
   topItems(): ItemList<Mithril.Children> {
     const { article } = this.attrs;
-
     const items = new ItemList<Mithril.Children>();
-
     items.add(
       'tags',
       <span class="BlogFeatured-list-item-tags">
@@ -65,9 +63,7 @@ export default class FeaturedBlogItem extends Component<Attrs> {
 
   dataItems(): ItemList<Mithril.Children> {
     const { article } = this.attrs;
-
     const items = new ItemList<Mithril.Children>();
-
     items.add(
       'createdAt',
       <span class="BlogFeatured-list-item-details-createdAt">
@@ -75,35 +71,14 @@ export default class FeaturedBlogItem extends Component<Attrs> {
       </span>,
       100
     );
-
-    items.add(
-      'author',
-      <span class="BlogFeatured-list-item-details-author">
-        {icon('far fa-user')} {article.user()?.displayName() || app.translator.trans('core.lib.username.deleted_text')}
-      </span>,
-      80
-    );
-
-    items.add(
-      'replies',
-      <span class="BlogFeatured-list-item-details-replies">
-        {icon('far fa-comment')} {article.commentCount() - 1}
-      </span>,
-      60
-    );
-
     return items;
   }
 
   view(vnode: Mithril.Vnode<Attrs, this>) {
     const { article, defaultImage } = this.attrs;
-
     const blogImage = article.blogMeta()?.featuredImage?.() ? `url(${article.blogMeta().featuredImage()})` : defaultImage;
     return (
-      <Link
-        href={app.route('blogArticle', {
-          id: `${article.slug()}`,
-        })}
+      <Link href={app.route('blogArticle', {id: `${article.slug()}`,})}
         className={classList(
           'BlogFeatured-list-item',
           article.tags().map((tag) => `BlogFeatured-list-item-category-${tag.id()}`),

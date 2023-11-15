@@ -3,13 +3,12 @@ import app from 'flarum/forum/app';
 import IndexPage from 'flarum/components/IndexPage';
 import Page from 'flarum/common/components/Page';
 import Button from 'flarum/common/components/Button';
-import BlogCategories from '../components/BlogCategories';
 import Link from 'flarum/common/components/Link';
 import LanguageDropdown from '../components/LanguageDropdown/LanguageDropdown';
-import ForumNav from '../components/ForumNav';
 import BlogOverviewItem from '../components/BlogOverviewItem';
-import FeaturedBlogItem from '../components/FeaturedBlogItem';
+import BlogTop from '../components/BlogTop';
 import BlogCrudeSide from '../components/BlogCrudeSide';
+import BlogSideArticles from '../components/BlogSideArticles';
 
 export default class BlogOverview extends Page {
   oninit(vnode) {
@@ -20,156 +19,47 @@ export default class BlogOverview extends Page {
     this.bodyClass = 'BlogOverviewPage';
 
     this.isLoading = true;
-    this.featuredPosts = [];
-    this.posts = [];
-
+    this.articles = [];
     this.languages = app.store.all('discussion-languages');
-
     this.currentSelectedLanguage = m.route.param('lang') ? m.route.param('lang') : app.translator.formatter.locale;
 
     // Send history push
     app.history.push('blog');
-
-    this.loadBlogOverview();
-
-    this.featuredCount = parseInt(app.forum.attribute('blogFeaturedCount'));
-
-    this.showCategories = true;
-    this.showForumNav = true;
-
-
-    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 5000);
-
-    //Yeah...hacky as fuck, but i dont know any other way
-    if (window.innerWidth <= 799) {
-      console.log("mobile");
-      var t = this;
-      setTimeout(function () {
-        if (document.getElementsByClassName('BlogFeatured-list')) {
-          document.getElementsByClassName('BlogFeatured-list')[0].addEventListener('touchmove', function () {
-            clearTimeout(t.scrollTimeout);
-          }, { once: true });
-        }
-      }, 1024);
-    }
-  }
-  onremove(vNode) {
-    clearTimeout(this.scrollTimeout);
-  }
-
-  scroll(direction) {
-    clearTimeout(this.scrollTimeout);
-    let list = document.querySelector('.BlogFeatured-list');
-    let item = document.querySelector('.BlogFeatured-list-item');
-    let maxScroll = list.scrollWidth - list.clientWidth;
-    let scrollAvailable = maxScroll - list.scrollLeft;
-
-    if (direction > 0 && scrollAvailable < item.clientWidth) {
-      list.scrollLeft = 0;
-    }
-
-    switch (true) {
-      case direction > 0 && scrollAvailable < item.clientWidth:
-        list.scrollLeft = 0;
-        break;
-      case direction < 0 && scrollAvailable == maxScroll:
-        list.scrollLeft = maxScroll;
-        break;
-      default:
-        list.scrollLeft += direction * (item.clientWidth + 20);
-        break;
-    }
-
-    this.scrollTimeout = setTimeout(this.scroll.bind(this, 1), 5000);
+    this.loadArticles();
   }
 
   // Load blog overview
-  loadBlogOverview() {
-    const preloadBlogOverview = app.preloadedApiDocument();
-    if (preloadBlogOverview && Array.isArray(preloadBlogOverview) && preloadBlogOverview.length > 0) {
-      // We must wrap this in a setTimeout because if we are mounting this
-      // component for the first time on page load, then any calls to m.redraw
-      // will be ineffective and thus any configs (scroll code) will be run
-      // before stuff is drawn to the page.
-      let featured = [];
-      let normal = [];
-      preloadBlogOverview.forEach(entry => {
-        if (entry.data.attributes.isFeatured) {
-          featured.push(entry);
-        } else {
-          normal.push(entry);
-        };
-      });
-      setTimeout(this.show.bind(this, normal, featured), 0);
-    } else {
-      this.reloadData();
-    }
-
+  loadArticles() {
+    this.reloadData();
     m.redraw();
   }
 
   reloadData() {
-    let normalQ = `-is:featured is:blog${m.route.param('slug') ? ` tag:${m.route.param('slug')}` : ''}`;
-    let featuredQ = `is:featured is:blog${m.route.param('slug') ? ` tag:${m.route.param('slug')}` : ''}`;
-
+    let query = 'blog:0';
     if (this.languages !== null && this.languages.length >= 1) {
-      normalQ += ` language:${this.currentSelectedLanguage}`;
-      featuredQ += ` language:${this.currentSelectedLanguage}`;
+      query += ` language:${this.currentSelectedLanguage}`;
     }
     this.isLoading = true;
-    let normalPromise = app.store.find('discussions', {
+    let promise = app.store.find('discussions', {
       page: {
         page: 1,
-        limit: 23,
+        limit: 18,
       },
       filter: {
-        q: normalQ,
+        q: query,
       },
       sort: '-createdAt',
     });
-    let featuredPromise = app.store.find('discussions', {
-      page: {
-        page: 1,
-        limit: 15,
-      },
-      filter: {
-        q: featuredQ,
-      },
-      sort: '-createdAt',
-    });
-    let promises = [
-      normalPromise,
-      featuredPromise,
-    ];
-    Promise.all(promises).then(values => {
-      setTimeout(this.show.bind(this, values[0], values[1]), 0);
-    });
-  }
-
-  // Show blog posts
-  show(articles, featured) {
-    if (articles.length === 0 && featured.length === 0) {
+    promise.then(values => {
+      if (values.length === 0) {
+        this.isLoading = false;
+        m.redraw();
+        return;
+      }
+      this.articles = values;
       this.isLoading = false;
       m.redraw();
-      return;
-    }
-    if (featured.length < 3) {
-      let needed = 3 - featured.length;
-      featured = featured.concat(articles.splice(0, needed));
-    }
-    if (articles.length > 20) {
-      articles.splice(19);
-    }
-
-    // Set pagination
-    this.hasMore = false;
-
-    this.featuredPosts = featured;
-    this.posts = articles;
-
-    this.isLoading = false;
-
-    m.redraw();
+    });
   }
 
   title() {
@@ -222,76 +112,43 @@ export default class BlogOverview extends Page {
                 />
               )}
             </div>
-
             {this.title()}
-
-            <div class="BlogFeatured-carousel">
-              <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(-1)} icon={'fas fa-arrow-left'}> </Button>
-              <div class="BlogFeatured-list">
-                {/* Ghost data */}
-                {this.isLoading &&
-                  [...new Array(3).fill(undefined)].map(() => (
-                    <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
-                      <div class="BlogFeatured-list-item-details">
-                        <h4>&nbsp;</h4>
-
-                        <div class="data">
-                          <span>
-                            <i class="far fa-wave" />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                {!this.isLoading &&
-                  this.featuredPosts.length >= 0 &&
-                  this.featuredPosts.map(
-                    (article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
-                  )}
-              </div>
-              <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(1)} icon={'fas fa-arrow-right'}> </Button>
-            </div>
           </div>
-
+          {<BlogTop />}
+          <hr />
           <div className={'BlogScrubber'}>
             <div className={'BlogList'}>
-              {this.isLoading &&
-                [false, false, true, false].map((state) => {
-                  return (
-                    <div className={`BlogList-item BlogList-item-${state === true ? 'sized' : 'default'} BlogList-item-ghost`}>
-                      <div className={'BlogList-item-photo FlarumBlog-default-image'}></div>
-                      <div className={'BlogList-item-content'}>
-                        <h4>&nbsp;</h4>
-                        <p>&nbsp;</p>
+              {this.isLoading && [false, false, false, false, false].map((state) => {
+                return (
+                  <div className={`BlogList-item BlogList-item-${state === true ? 'sized' : 'default'} BlogList-item-ghost`}>
+                    <div className={'BlogList-item-photo FlarumBlog-default-image'}></div>
+                    <div className={'BlogList-item-content'}>
+                      <h4>&nbsp;</h4>
+                      <p>&nbsp;</p>
 
-                        <div className={'data'}>
-                          <span>
-                            <i className={'far fa-wave'} />
-                          </span>
-                        </div>
+                      <div className={'data'}>
+                        <span>
+                          <i className={'far fa-wave'} />
+                        </span>
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                );
+              })}
 
-              {!this.isLoading &&
-                this.posts.length >= 1 &&
-                this.posts.map((article) => <BlogOverviewItem article={article} defaultImage={defaultImage} />)}
-              
-              <div class="Form--centered">
-                <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
-                  <Button class={'Button'}>
-                    {app.translator.trans('v17development-flarum-blog.forum.read_more')}
-                  </Button>
-                </Link>
-              </div>
-            </div>
+              {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =>
+                <BlogOverviewItem article={article} defaultImage={defaultImage}
+                />)}
 
-            <div className={'Sidebar'}>
+              {<BlogSideArticles />}
               {<BlogCrudeSide />}
-              {this.showCategories && <BlogCategories />}
-              {this.showForumNav && <ForumNav />}
+            </div>
+            <div class="Form--centered">
+              <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
+                <Button class={'Button'}>
+                  {app.translator.trans('v17development-flarum-blog.forum.read_more')}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

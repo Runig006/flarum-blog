@@ -12,7 +12,7 @@ class BlogMetaValidator extends AbstractValidator
     protected $rules = [
         'featured_image' => ['string', 'nullable'],
         'summary' => ['string', 'nullable'],
-        'is_featured' => ['boolean'],
+        'position' => ['integer'],
         'is_sized' => ['boolean'],
         'is_pending_review' => ['boolean']
     ];

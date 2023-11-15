@@ -75,16 +75,10 @@ class CreateBlogMetaHandler
 
         $blogMeta->featured_image = Arr::get($data, 'attributes.featuredImage', null);
         $blogMeta->summary = Arr::get($data, 'attributes.summary', null);
-        $blogMeta->is_featured = Arr::get($data, 'attributes.isFeatured', false);
-        $blogMeta->is_sized = Arr::get($data, 'attributes.isSized', false);
+        $blogMeta->position = Arr::get($data, 'attributes.position', 0);
         $blogMeta->is_sized = Arr::get($data, 'attributes.isSized', false);
 
-        // Auto approve if an article already existed or it does not require a review
-        if ($discussion->created_at->diffInSeconds(\Carbon\Carbon::now()) > 30 || $this->settings->get('blog_requires_review', false) == false) {
-            $blogMeta->is_pending_review = false;
-        } else {
-            $blogMeta->is_pending_review = !$actor->can('blog.autoApprovePosts');
-        }
+        $blogMeta->is_pending_review = !$actor->can('blog.autoApprovePosts');
 
         //If we have a publish date, dont give a fuck...is """pending review"""
         if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {

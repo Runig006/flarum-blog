@@ -54,7 +54,7 @@ return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
         ->css(__DIR__ . '/less/Forum.less')
-        ->route('/blog', 'blog.overview', BlogOverviewController::class)
+        ->route('/blog', 'blog.overview')
         ->route('/blog/compose', 'blog.compose', BlogComposerController::class)
         ->route('/blog/pending', 'blog.pending')
         ->route('/blog/list', 'blog.list')
@@ -112,7 +112,6 @@ return [
 
     (new Extend\SimpleFlarumSearch(DiscussionSearcher::class))
         ->addGambit(BlogArticleFilterGambit::class)
-        ->addGambit(FeaturedArticleFilterGambit::class)
         ->addGambit(PendingValidationGambit::class),
 
     (new ExtendUser())

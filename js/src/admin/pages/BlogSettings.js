@@ -22,10 +22,7 @@ export default class BlogSettings extends ExtensionPage {
     this.hideTagsInList = app.data.settings.blog_hide_tags ?? true;
     this.allowComments = app.data.settings.blog_allow_comments ?? true;
     this.hideOnDiscussionList = app.data.settings.blog_filter_discussion_list ?? false;
-    this.requiresReviewOnPost = app.data.settings.blog_requires_review ?? false;
-    this.addCategoryHierarchy = app.data.settings.blog_category_hierarchy ?? true;
-    this.addSidebarNav = app.data.settings.blog_add_sidebar_nav ?? true;
-    this.featuredCount = app.data.settings.blog_featured_count ?? 3;
+
     this.blogAddHero = app.data.settings.blog_add_hero ?? true;
 
     this.htmlSideBar = app.data.settings.blog_html_sidebar ?? null;
@@ -69,19 +66,6 @@ export default class BlogSettings extends ExtensionPage {
               ),
               Switch.component(
                 {
-                  state: this.requiresReviewOnPost == true,
-                  onchange: (val) => {
-                    this.requiresReviewOnPost = val;
-                    this.hasChanges = true;
-                  },
-                },
-                [
-                  <b>{app.translator.trans('v17development-flarum-blog.admin.settings.require_review_label')}</b>,
-                  <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.require_review_text')}</div>,
-                ]
-              ),
-              Switch.component(
-                {
                   state: this.hideOnDiscussionList == true,
                   onchange: (val) => {
                     this.hideOnDiscussionList = val;
@@ -91,19 +75,6 @@ export default class BlogSettings extends ExtensionPage {
                 [
                   <b>{app.translator.trans('v17development-flarum-blog.admin.settings.hide_on_discussion_list_label')}</b>,
                   <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.hide_on_discussion_list_text')}</div>,
-                ]
-              ),
-              Switch.component(
-                {
-                  state: this.addSidebarNav == true,
-                  onchange: (val) => {
-                    this.addSidebarNav = val;
-                    this.hasChanges = true;
-                  },
-                },
-                [
-                  <b>{app.translator.trans('v17development-flarum-blog.admin.settings.add_sidebar_nav_label')}</b>,
-                  <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.add_sidebar_nav_text')}</div>,
                 ]
               ),
               Switch.component(
@@ -151,19 +122,6 @@ export default class BlogSettings extends ExtensionPage {
                 [
                   <b>{app.translator.trans('v17development-flarum-blog.admin.settings.hide_tags_in_taglist_label')}</b>,
                   <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.hide_tags_in_taglist_text')}</div>,
-                ]
-              ),
-              Switch.component(
-                {
-                  state: this.addCategoryHierarchy == true,
-                  onchange: (val) => {
-                    this.addCategoryHierarchy = val;
-                    this.hasChanges = true;
-                  },
-                },
-                [
-                  <b>{app.translator.trans('v17development-flarum-blog.admin.settings.show_tag_hierarchy_label')}</b>,
-                  <div className="helpText">{app.translator.trans('v17development-flarum-blog.admin.settings.show_tag_hierarchy_text')}</div>,
                 ]
               ),
             ]
@@ -258,14 +216,11 @@ export default class BlogSettings extends ExtensionPage {
     this.isSaving = true;
 
     saveSettings({
-      blog_add_sidebar_nav: this.addSidebarNav,
       blog_redirects_enabled: this.redirectsEnabled,
       blog_hide_tags: this.hideTagsInList,
       blog_requires_review: this.requiresReviewOnPost,
       blog_allow_comments: this.allowComments,
-      blog_category_hierarchy: this.addCategoryHierarchy,
       blog_filter_discussion_list: this.hideOnDiscussionList,
-      blog_featured_count: this.featuredCount,
       blog_add_hero: this.blogAddHero,
       blog_html_sidebar: this.htmlSideBar,
     })

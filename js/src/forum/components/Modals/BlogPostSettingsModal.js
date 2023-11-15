@@ -4,7 +4,7 @@ import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
 import Stream from 'flarum/common/utils/Stream';
 import Switch from 'flarum/common/components/Switch';
-import selectFiles from '../../utils/selectFiles';
+import Select from 'flarum/common/components/Select';
 
 export default class BlogPostSettingsModal extends Modal {
   oninit(vnode) {
@@ -22,7 +22,13 @@ export default class BlogPostSettingsModal extends Modal {
 
     this.featuredImage = Stream(this.meta.featuredImage() || '');
 
-    this.isFeatured = Stream(this.meta.isFeatured() || false);
+    this.positionOptions = {
+      0: 'Normal',
+      1: 'Destacada',
+      2: 'Rapida'
+    };
+    console.log(this.meta);
+    this.position = Stream(this.meta.position() || 0);
     this.isSized = Stream(this.meta.isSized() || false);
     this.isPendingReview = Stream(this.meta.isPendingReview() || false);
     this.publishDate = Stream(this.meta.publishDate() || '');
@@ -144,19 +150,21 @@ export default class BlogPostSettingsModal extends Modal {
     );
 
     items.add(
-      'featured',
+      'position',
       <div className="Form-group">
-        {Switch.component(
+
+        {Select.component(
           {
-            state: this.isFeatured() == true,
-            onchange: (val) => {
-              this.isFeatured(val);
+            options: this.positionOptions,
+            value: this.position(),
+            onchange: (id) => {
+              this.position(id);
             },
           },
           [
-            <b>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.featured.title')}</b>,
+            <b>{app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.position.title')}</b>,
             <div className="helpText" style={{ fontWeight: 500 }}>
-              {app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.featured.helper_text')}
+              {app.translator.trans('v17development-flarum-blog.forum.article_settings.fields.position.helper_text')}
             </div>,
           ]
         )}
@@ -203,7 +211,7 @@ export default class BlogPostSettingsModal extends Modal {
     return {
       summary: this.summary(),
       featuredImage: this.featuredImage(),
-      isFeatured: this.isFeatured(),
+      position: this.position(),
       isSized: this.isSized(),
       isPendingReview: this.isPendingReview(),
       publishDate: Date.parse(this.publishDate()) ? this.publishDate() : null,

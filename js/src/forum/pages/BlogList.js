@@ -3,7 +3,6 @@ import { extend } from 'flarum/common/extend';
 import LinkButton from 'flarum/common/components/LinkButton';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import DiscussionListState from 'flarum/forum/states/DiscussionListState';
-import GlobalSearchState from 'flarum/forum/states/GlobalSearchState';
 
 export default function () {
 
@@ -33,7 +32,7 @@ export default function () {
         }
         if (app.current.get('routeName') === 'blogList') {
             params.filter = params.filter ?? {};
-            params.filter.blog = 1;
+            params.filter.blog = "";
         }
     });
 }

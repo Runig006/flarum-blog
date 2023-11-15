@@ -44,7 +44,7 @@ class CreateBlogMetaOnDiscussionCreate
                 }
 
                 // Auto approve if it does not require a review
-                $isPendingReview = $this->settings->get('blog_requires_review', false) == true && !$event->actor->can('blog.autoApprovePosts');
+                $isPendingReview = !$event->actor->can('blog.autoApprovePosts');
 
                 $blogMeta = BlogMeta::build(
                     $discussion->id,

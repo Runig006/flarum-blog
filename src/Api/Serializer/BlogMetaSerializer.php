@@ -20,7 +20,7 @@ class BlogMetaSerializer extends AbstractSerializer
         return [
             'featuredImage'     => $meta->featured_image,
             'summary'           => $meta->summary,
-            'isFeatured'        => (bool) $meta->is_featured,
+            'position'          => (integer) $meta->position,
             'isSized'           => (bool) $meta->is_sized,
             'isPendingReview'   => (bool) $meta->is_pending_review,
             'publishDate'       => $meta->publish_date,

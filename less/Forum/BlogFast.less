@@ -1,0 +1,34 @@
+  //BlogFast and BlogHTML are inside the grid
+  .BlogFast {
+      padding-right: 5px;
+      border-radius: 2px;
+      box-shadow: 6px 6px 8px 1px @control-bg;
+      color: @control-color;
+      background: @body-bg;
+      ul {
+        list-style: disc;
+          li {
+              margin-top: 1px;
+              margin-bottom: 5px;
+          }
+      }
+  }
+
+  .FlarumBlogOverview {
+      .BlogFast {
+          grid-row: ~"1";
+          grid-column: auto/-1;
+
+          @media screen and (max-width: 513px) {
+              grid-row: 4;
+              grid-column: 1;
+          }
+      }
+  }
+
+  .FlarumBlogItem {
+    .BlogFast {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+  }

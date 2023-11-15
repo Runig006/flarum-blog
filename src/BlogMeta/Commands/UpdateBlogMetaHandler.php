@@ -87,8 +87,8 @@ class UpdateBlogMetaHandler
         }
 
         // Is featured
-        if (Arr::has($data, 'attributes.isFeatured')) {
-            $blogMeta->is_featured = Arr::get($data, 'attributes.isFeatured', false);
+        if (Arr::has($data, 'attributes.position')) {
+            $blogMeta->position = Arr::get($data, 'attributes.position', 0);
         }
 
         // Is sized
