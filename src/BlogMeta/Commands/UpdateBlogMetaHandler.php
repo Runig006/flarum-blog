@@ -97,7 +97,7 @@ class UpdateBlogMetaHandler
         }
 
         // Update pending review
-        if ($actor->can('blog.canApprovePosts') && $blogMeta->is_pending_review && Arr::has($data, 'attributes.isPendingReview')) {
+        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.isPendingReview')) {
             $blogMeta->is_pending_review = Arr::get($data, 'attributes.isPendingReview', false);
         }
 

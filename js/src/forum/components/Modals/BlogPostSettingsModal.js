@@ -27,7 +27,6 @@ export default class BlogPostSettingsModal extends Modal {
       1: 'Destacada',
       2: 'Rapida'
     };
-    console.log(this.meta);
     this.position = Stream(this.meta.position() || 0);
     this.isSized = Stream(this.meta.isSized() || false);
     this.isPendingReview = Stream(this.meta.isPendingReview() || false);

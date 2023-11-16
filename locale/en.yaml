@@ -6,6 +6,7 @@ v17development-flarum-blog:
       write_articles: "Write and edit blog articles"
       auto_approve_posts: "Post articles without approval"
       approve_posts: "Can approve blog articles"
+      approve_own_posts: "Can approve own post"
 
     settings:
       no_categories_selected: "No categories selected"
@@ -75,6 +76,8 @@ v17development-flarum-blog:
       withdraw_review: "This article is pending a date to be published"
       approve_article: "Approve article"
       approve_article_approved: "The article has been approved and published"
+      dissaprove_article: 'Go to pending review'
+      approve_article_dissaproved: 'The article is pending review again'
 
     tools:
       rename_article: "Rename article"

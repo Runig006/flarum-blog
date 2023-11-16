@@ -45,7 +45,6 @@ export default function () {
                             uploader: uploader,
                             onSelect: (files) => {
                                 this.blogSettings.image(app.store.getById('files', files[0]).url());
-                                console.log(this.blogSettings);
                             },
                         },
                         true

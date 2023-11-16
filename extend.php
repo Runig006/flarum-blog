@@ -43,7 +43,7 @@ use V17Development\FlarumBlog\Query\FeaturedArticleFilterGambit;
 
 use Flarum\Extend\User as ExtendUser;
 use Flarum\Api\Serializer\UserSerializer;
-
+use V17Development\FlarumBlog\Api\AttachDiscussionSerializerAttributes;
 use V17Development\FlarumBlog\Console\AutoValidateCommand;
 use V17Development\FlarumBlog\Console\AutoValidateSchedule;
 use V17Development\FlarumBlog\Formatter\ReviewFormatter;
@@ -98,6 +98,9 @@ return [
 
     (new Extend\ApiSerializer(ForumSerializer::class))
         ->attributes(AttachForumSerializerAttributes::class),
+
+    (new Extend\ApiSerializer(DiscussionSerializer::class))
+        ->attributes(AttachDiscussionSerializerAttributes::class),
 
     (new Extend\ApiSerializer(TagSerializer::class))
         ->attributes(AttatchTagSerializerAttributes::class),

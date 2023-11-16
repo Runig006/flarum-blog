@@ -20,16 +20,16 @@ app.initializers.add('v17development-flarum-blog', () => {
     )
     .registerPermission(
       {
-        icon: 'far fa-star',
-        label: app.translator.trans('v17development-flarum-blog.admin.permissions.auto_approve_posts'),
-        permission: 'blog.autoApprovePosts',
+        icon: 'far fa-thumbs-up',
+        label: app.translator.trans('v17development-flarum-blog.admin.permissions.approve_own_posts'),
+        permission: 'blog.canApproveOwnPost',
       },
       'blog',
       90
     )
     .registerPermission(
       {
-        icon: 'far fa-thumbs-up',
+        icon: 'far fa-comments',
         label: app.translator.trans('v17development-flarum-blog.admin.permissions.approve_posts'),
         permission: 'blog.canApprovePosts',
       },

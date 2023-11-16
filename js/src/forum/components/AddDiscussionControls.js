@@ -4,11 +4,10 @@ import DiscussionControls from 'flarum/forum/utils/DiscussionControls';
 import BlogPostSettingsModal from './Modals/BlogPostSettingsModal';
 import Button from 'flarum/common/components/Button';
 import Tooltip from 'flarum/common/components/Tooltip';
-import icon from 'flarum/common/helpers/icon';
+import Alert from 'flarum/common/components/Alert';
 
 export default function () {
     extend(DiscussionControls, 'userControls', function (items, discussion, context) {
-
         // If the discussion is:
         // - Not a discusion...yeah dont have a clue why
         // - Is hidden
@@ -49,7 +48,7 @@ export default function () {
             Button.component(
                 {
                     className: 'Button',
-                    onclick: () => app.modal.show(BlogPostSettingsModal, { article:discussion }),
+                    onclick: () => app.modal.show(BlogPostSettingsModal, { article: discussion }),
                     icon: 'fas fa-cogs',
                 },
                 app.translator.trans('v17development-flarum-blog.forum.tools.article_settings')
@@ -57,9 +56,20 @@ export default function () {
             -10
         );
 
-        if (app.forum.attribute('canApproveBlogPosts') && (discussion.blogMeta() == false || discussion.blogMeta().isPendingReview())) {
+        if (discussion.attribute('canBeApprove')) {
+            let sucess = 'v17development-flarum-blog.forum.review_article.approve_article_approved';
+            let icon = 'fas fa-thumbs-up';
+            let text = 'v17development-flarum-blog.forum.review_article.approve_article';
+
             let disabled = false;
             let title = "";
+
+            if (discussion.blogMeta().isPendingReview() == false) {
+                sucess = 'v17development-flarum-blog.forum.review_article.approve_article_dissaproved';
+                icon = 'fas fas fa-thumbs-down';
+                text = 'v17development-flarum-blog.forum.review_article.dissaprove_article';
+            }
+
             if (discussion.blogMeta() == false) {
                 disabled = true;
                 title = app.translator.trans('v17development-flarum-blog.forum.tools.tooltip.missing_meta');
@@ -67,15 +77,15 @@ export default function () {
             items.add(
                 'approve',
                 <Tooltip text={title}>
-                    <Button className='Button' icon='fas fa-thumbs-up' disabled={disabled} onclick={() => {
+                    <Button className='Button' icon={icon} disabled={disabled} onclick={() => {
                         discussion.blogMeta().save({
-                            isPendingReview: false,
+                            isPendingReview: !discussion.blogMeta().isPendingReview(),
                         }).then(
                             () => {
                                 app.alerts.show(
                                     Alert,
                                     { type: 'success' },
-                                    app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article_approved')
+                                    app.translator.trans(sucess)
                                 );
                             },
                             (response) => {
@@ -85,7 +95,7 @@ export default function () {
                         );
                     }}
                     >
-                        {app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article')}
+                        {app.translator.trans(text)}
                     </Button>
                 </Tooltip>,
                 -10

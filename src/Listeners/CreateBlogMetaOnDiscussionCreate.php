@@ -44,15 +44,13 @@ class CreateBlogMetaOnDiscussionCreate
                 }
 
                 // Auto approve if it does not require a review
-                $isPendingReview = !$event->actor->can('blog.autoApprovePosts');
-
                 $blogMeta = BlogMeta::build(
                     $discussion->id,
                     Arr::get($event->data, 'attributes.blogMeta.featuredImage', null),
                     Arr::get($event->data, 'attributes.blogMeta.summary', null),
-                    Arr::get($event->data, 'attributes.blogMeta.isFeatured', null),
+                    Arr::get($event->data, 'attributes.blogMeta.position', 0),
                     Arr::get($event->data, 'attributes.blogMeta.isSized', null),
-                    $isPendingReview,
+                    true,
                     Arr::get($event->data, 'attributes.blogMeta.publishDate', null),
                 );
 

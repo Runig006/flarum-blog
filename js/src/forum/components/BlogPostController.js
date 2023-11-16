@@ -20,6 +20,16 @@ export default class BlogPostController extends Component {
     const article = this.attrs.article;
     const items = new ItemList();
 
+
+    var approveSuccess = 'v17development-flarum-blog.forum.review_article.approve_article_approved';
+    var approveIcon = 'fas fa-thumbs-up';
+    var approveText = 'v17development-flarum-blog.forum.review_article.approve_article';
+    if (article.blogMeta().isPendingReview() == false) {
+      approveSuccess = 'v17development-flarum-blog.forum.review_article.approve_article_dissaproved';
+      approveIcon = 'fas fas fa-thumbs-down';
+      approveText = 'v17development-flarum-blog.forum.review_article.dissaprove_article';
+    }
+
     // Working for GlowingBlue version
     const LanguageDiscussionModal =
       flarum.extensions['fof-discussion-language'] && typeof flarum.extensions['fof-discussion-language'].components !== 'undefined'
@@ -93,7 +103,7 @@ export default class BlogPostController extends Component {
     }
 
     // Approve article
-    if (article.blogMeta() && article.blogMeta().isPendingReview()) {
+    if (article.blogMeta() && article.attribute('canBeApprove')) {
       items.add('separator1', <li className="Dropdown-separator" />, 65);
 
       items.add(
@@ -103,28 +113,27 @@ export default class BlogPostController extends Component {
             className: 'Button',
             disabled: !app.forum.attribute('canApproveBlogPosts'),
             onclick: () => {
-              article
-                .blogMeta()
-                .save({
-                  isPendingReview: false,
-                })
-                .then(
-                  () => {
-                    app.alerts.show(
-                      Alert,
-                      { type: 'success' },
-                      app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article_approved')
-                    );
-                  },
-                  (response) => {
-                    this.loading = false;
-                    this.handleErrors(response);
-                  }
-                );
+
+
+              article.blogMeta().save({
+                isPendingReview: !article.blogMeta().isPendingReview(),
+              }).then(
+                () => {
+                  app.alerts.show(
+                    Alert,
+                    { type: 'success' },
+                    app.translator.trans(approveSuccess)
+                  );
+                },
+                (response) => {
+                  this.loading = false;
+                  this.handleErrors(response);
+                }
+              );
             },
-            icon: 'fas fa-thumbs-up',
+            icon: approveIcon,
           },
-          app.translator.trans('v17development-flarum-blog.forum.review_article.approve_article')
+          app.translator.trans(approveText)
         ),
         60
       );

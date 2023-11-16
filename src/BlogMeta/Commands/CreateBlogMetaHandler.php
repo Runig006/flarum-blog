@@ -78,7 +78,7 @@ class CreateBlogMetaHandler
         $blogMeta->position = Arr::get($data, 'attributes.position', 0);
         $blogMeta->is_sized = Arr::get($data, 'attributes.isSized', false);
 
-        $blogMeta->is_pending_review = !$actor->can('blog.autoApprovePosts');
+        $blogMeta->is_pending_review = true;
 
         //If we have a publish date, dont give a fuck...is """pending review"""
         if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {

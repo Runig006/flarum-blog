@@ -6,6 +6,7 @@ v17development-flarum-blog:
       write_articles: "Escribir y editar articulos"
       auto_approve_posts: "Escrir articulos sin aprovación"
       approve_posts: "Puede aprobar articulos"
+      approve_own_posts: "Puede aprobar sus propios articulos"
 
     settings:
       no_categories_selected: "No hay categorias seleccionadas"
@@ -74,6 +75,8 @@ v17development-flarum-blog:
       withdraw_review: "Este articulo esta pendiente de una fecha para ser publicado"
       approve_article: "Articulado aprobado"
       approve_article_approved: "Este articulo esta aprobado y publicado"
+      dissaprove_article: 'Poner en revisión el articulo'
+      approve_article_dissaproved: 'El artículo esta en revisión'
 
     tools:
       rename_article: "Renombrar articulo"
