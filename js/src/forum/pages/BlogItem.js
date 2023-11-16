@@ -185,19 +185,16 @@ export default class BlogItem extends Page {
       ? `url(${app.forum.attribute('baseUrl')}/assets/${app.forum.attribute('blogDefaultImage')})`
       : null;
 
-    const blogImage = this.article?.blogMeta()?.featuredImage?.() ? `url(${this.article.blogMeta().featuredImage()})` : defaultImage;
+    const blogImage = this.article?.blogMeta()?.featuredImage?.() ? this.article.blogMeta().featuredImage() : defaultImage;
 
     const items = new ItemList();
 
     items.add(
       'image',
-      <div
-        className={classList('FlarumBlog-Article-Image FlarumBlog-default-image', { 'FlarumBlog-Article-GhostImage': this.loading })}
-        style={{
-          backgroundImage: blogImage,
-          opacity: this.article?.isHidden?.() ? 0.4 : null,
-        }}
-      />,
+      <div className={classList('FlarumBlog-Article-Image FlarumBlog-default-image', { 'FlarumBlog-Article-GhostImage': this.loading })}>
+        <img src={blogImage}/>
+      </div>  
+      ,
       100
     );
 

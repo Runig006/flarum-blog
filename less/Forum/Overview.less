@@ -45,7 +45,7 @@
         right: 0%;
       }
 
-      @media screen and (max-width: 799px) {
+      @media @phone {
         display: none;
       }
     }
@@ -57,7 +57,7 @@
       overflow-y: hidden;
       scroll-behavior: smooth;
 
-      @media screen and (max-width: 799px) {
+      @media @phone {
         overflow-x: auto;
       }
 
@@ -79,9 +79,15 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
-        @media screen and (min-width: 799px) {
+
+        @media @tablet-up {
           height: 250px;
-          min-width: 25%;
+          min-width: 50%;
+        }
+
+        @media @desktop-up {
+          height: 250px;
+          min-width: 33%;
         }
 
         &-top {
@@ -121,7 +127,7 @@
             position: relative;
             z-index: 2;
 
-            @media screen and (min-width: 1380px) {
+            @media @desktop-up {
               font-size: 30px;
             }
           }
@@ -197,11 +203,11 @@
       grid-auto-flow: row dense;
       align-items:start;
 
-      @media screen and (min-width: 512px) {
+      @media @tablet-up{
         grid-template-columns: repeat(2, 1fr);
       }
 
-      @media screen and (min-width: 768px) {
+      @media @desktop-up{
         grid-template-columns: repeat(3, 1fr);
       }
 
@@ -225,11 +231,18 @@
 
         .BlogList-item-content {
           text-align: center;
+          .summary{
+            transition: font-size 0.5s;
+            font-size: 0;
+          }
         }
 
         // Sized card
         &-sized {
-          @media screen and (min-width: 512px) {
+          .summary{
+            font-size: inherit !important;
+          }
+          @media @tablet-up{
             grid-column: span 2;
           }
         }
@@ -265,6 +278,9 @@
 
         &:hover {
           box-shadow: 1px 3px 15px 5px @control-bg;
+          .summary{
+            font-size: inherit;
+          }
         }
       }
 
