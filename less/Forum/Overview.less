@@ -175,12 +175,15 @@
 
       &-item-ghost {
         background: @control-bg;
+
         .BlogFeatured-list-item-details {
           text-shadow: none;
+
           &:before {
             display: none;
           }
         }
+
         h4,
         .data {
           background: @control-bg;
@@ -193,6 +196,12 @@
 
   .BlogScrubber {
     margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+
+    @media @tablet-up {
+      flex-direction: row;
+    }
 
     // Blog items
     .BlogList {
@@ -201,8 +210,10 @@
       grid-column-gap: 20px;
       grid-row-gap: 20px;
       grid-auto-flow: row dense;
-      align-items:start;
+      align-items: start;
 
+
+      /*
       @media @tablet-up{
         grid-template-columns: repeat(2, 1fr);
       }
@@ -210,19 +221,32 @@
       @media @desktop-up{
         grid-template-columns: repeat(3, 1fr);
       }
+      */
 
       &-item {
         display: block;
         text-decoration: none;
         border-radius: 2px;
-        box-shadow: 6px 6px 8px 1px @control-bg;
+        box-shadow: 3px 2px 11px 1px @control-bg;
         color: @control-color;
         background: @body-bg;
+
+        display: flex;
+        align-items: center;
+
+        @media @phone {
+          flex-direction: column;
+          text-align: center;
+        }
 
         // Default style
         .BlogList-item-photo {
           flex-grow: 0;
           flex-shrink: 0;
+
+          @media @tablet-up {
+            max-width: 250px;
+          }
 
           img {
             width: 100%;
@@ -230,20 +254,22 @@
         }
 
         .BlogList-item-content {
-          text-align: center;
-          .summary{
+
+          //text-align: center;
+          .summary {
             transition: font-size 0.5s;
-            font-size: 0;
+            //font-size: 0;
           }
         }
 
         // Sized card
         &-sized {
-          .summary{
+          .summary {
             font-size: inherit !important;
           }
-          @media @tablet-up{
-            grid-column: span 2;
+
+          @media @tablet-up {
+            //grid-column: span 2;
           }
         }
 
@@ -278,7 +304,8 @@
 
         &:hover {
           box-shadow: 1px 3px 15px 5px @control-bg;
-          .summary{
+
+          .summary {
             font-size: inherit;
           }
         }
@@ -299,6 +326,16 @@
       }
     }
 
+    @media @tablet-up {
+      .Sidebar {
+        width: 460px;
+        margin-left: 20px;
+
+        .BlogFast {
+          margin-top: -10px;
+        }
+      }
+    }
   }
 }
 

@@ -136,21 +136,22 @@ export default class BlogOverview extends Page {
                 );
               })}
 
-              {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =>
-                <BlogOverviewItem article={article} defaultImage={defaultImage}
-                />)}
+              {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =><BlogOverviewItem article={article} defaultImage={defaultImage}/>)}
 
+              
+            </div>
+            <div className={'Sidebar'}>
               {<BlogSideArticles />}
               {<BlogCrudeSide />}
             </div>
-            <div class="Form--centered">
+          </div>
+          <div class="Form--centered">
               <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
                 <Button class={'Button'}>
                   {app.translator.trans('v17development-flarum-blog.forum.read_more')}
                 </Button>
               </Link>
             </div>
-          </div>
         </div>
       </div>,
     ];
