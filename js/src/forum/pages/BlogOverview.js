@@ -7,8 +7,7 @@ import Link from 'flarum/common/components/Link';
 import LanguageDropdown from '../components/LanguageDropdown/LanguageDropdown';
 import BlogOverviewItem from '../components/BlogOverviewItem';
 import BlogTop from '../components/BlogTop';
-import BlogCrudeSide from '../components/BlogCrudeSide';
-import BlogSideArticles from '../components/BlogSideArticles';
+import BlogSide from '../components/BlogSide';
 
 export default class BlogOverview extends Page {
   oninit(vnode) {
@@ -43,7 +42,7 @@ export default class BlogOverview extends Page {
     let promise = app.store.find('discussions', {
       page: {
         page: 1,
-        limit: 18,
+        limit: 20,
       },
       filter: {
         q: query,
@@ -58,6 +57,10 @@ export default class BlogOverview extends Page {
       }
       this.articles = values;
       this.isLoading = false;
+      this.biggerArticles = this.articles.filter((arti) => arti.blogMeta()?.isSized?.());
+      if(this.biggerArticles.length % 2 != 0){
+        this.articles.pop();
+      }
       m.redraw();
     });
   }
@@ -89,71 +92,64 @@ export default class BlogOverview extends Page {
       app.forum.attribute('blogAddHero') == true && IndexPage.prototype.hero(),
       <div className={'FlarumBlogOverview'}>
         <div className={'container'}>
-          <div className={'BlogFeatured'}>
-            <div className={'BlogOverviewButtons'}>
-              {app.forum.attribute('canWriteBlogPosts') && (
-                <Button className={'Button'} onclick={() => this.newArticle()} icon={'fas fa-pencil-alt'}>
-                  {app.translator.trans('v17development-flarum-blog.forum.compose.write_article')}
-                </Button>
-              )}
+          <div className={'BlogOverviewButtons'}>
+            {app.forum.attribute('canWriteBlogPosts') && (
+              <Button className={'Button'} onclick={() => this.newArticle()} icon={'fas fa-pencil-alt'}>
+                {app.translator.trans('v17development-flarum-blog.forum.compose.write_article')}
+              </Button>
+            )}
 
-              {this.languages !== null && this.languages.length >= 1 && (
-                <LanguageDropdown
-                  selected={this.currentSelectedLanguage}
-                  onclick={(language) => {
-                    this.currentSelectedLanguage = language;
+            {this.languages !== null && this.languages.length >= 1 && (
+              <LanguageDropdown
+                selected={this.currentSelectedLanguage}
+                onclick={(language) => {
+                  this.currentSelectedLanguage = language;
 
-                    m.route.set(document.location.pathname, {
-                      lang: language,
-                    });
+                  m.route.set(document.location.pathname, {
+                    lang: language,
+                  });
 
-                    this.reloadData();
-                  }}
-                />
-              )}
-            </div>
-            {this.title()}
+                  this.reloadData();
+                }}
+              />
+            )}
           </div>
-          {<BlogTop />}
-          <hr />
-          <div className={'BlogScrubber'}>
-            <div className={'BlogList'}>
-              {this.isLoading && [false, false, false, false, false].map((state) => {
-                return (
-                  <div className={`BlogList-item BlogList-item-${state === true ? 'sized' : 'default'} BlogList-item-ghost`}>
-                    <div className={'BlogList-item-photo FlarumBlog-default-image'}></div>
-                    <div className={'BlogList-item-content'}>
-                      <h4>&nbsp;</h4>
-                      <p>&nbsp;</p>
+          {this.title()}
+          <div class="FlarumBlogGrid">
+            {<BlogTop />}
+            {this.isLoading && [false, false, false, false, false].map((state) => {
+              return (
+                <div className={`BlogList-item BlogList-item-${state === true ? 'sized' : 'default'} BlogList-item-ghost`}>
+                  <div className={'BlogList-item-photo FlarumBlog-default-image'}></div>
+                  <div className={'BlogList-item-content'}>
+                    <h4>&nbsp;</h4>
+                    <p>&nbsp;</p>
 
-                      <div className={'data'}>
-                        <span>
-                          <i className={'far fa-wave'} />
-                        </span>
-                      </div>
+                    <div className={'data'}>
+                      <span>
+                        <i className={'far fa-wave'} />
+                      </span>
                     </div>
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
 
-              {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =><BlogOverviewItem article={article} defaultImage={defaultImage}/>)}
+            {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =>
+              <BlogOverviewItem article={article} defaultImage={defaultImage}
+              />)}
 
-              
-            </div>
-            <div className={'Sidebar'}>
-              {<BlogSideArticles />}
-              {<BlogCrudeSide />}
-            </div>
+            {<BlogSide />}
           </div>
           <div class="Form--centered">
-              <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
-                <Button class={'Button'}>
-                  {app.translator.trans('v17development-flarum-blog.forum.read_more')}
-                </Button>
-              </Link>
-            </div>
+            <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
+              <Button class={'Button'}>
+                {app.translator.trans('v17development-flarum-blog.forum.read_more')}
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>,
+      </div>
     ];
   }
 

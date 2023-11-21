@@ -1,7 +1,7 @@
 import app from 'flarum/forum/app';
 import Component from 'flarum/common/Component';
 
-export default class BlogCrudeSide extends Component {
+export default class BlogCrude extends Component {
   oninit(vnode) {
     super.oninit(vnode);
     this.htmlSidebar = app.forum.attribute('htmlSideBar');
@@ -9,9 +9,9 @@ export default class BlogCrudeSide extends Component {
 
   view() {
     return (
-      <div className="BlogHtml">
+      <>
         {m.trust(this.htmlSidebar)}
-      </div>
+      </>
     );
   }
 }

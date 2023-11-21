@@ -1,7 +1,8 @@
 import Component from 'flarum/common/Component';
 import Link from 'flarum/common/components/Link';
+import BlogCrude from './BlogCrude';
 
-export default class BlogSideArticles extends Component {
+export default class BlogSide extends Component {
   oninit(vnode) {
     super.oninit(vnode);
 
@@ -49,7 +50,7 @@ export default class BlogSideArticles extends Component {
 
   view() {
     return (
-      <div className="BlogFast">
+      <div className="BlogSide">
         <ul>
           {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =>
             <li>
@@ -59,6 +60,7 @@ export default class BlogSideArticles extends Component {
             </li>
           )}
         </ul>
+        <BlogCrude/>
       </div>
     );
   }

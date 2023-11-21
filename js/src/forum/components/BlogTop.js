@@ -65,8 +65,8 @@ export default class BlogTop extends Component {
 
     scroll(direction) {
         clearTimeout(this.scrollTimeout);
-        let list = document.querySelector('.BlogFeatured-list');
-        let item = document.querySelector('.BlogFeatured-list-item');
+        let list = document.querySelector('.carousel-list');
+        let item = document.querySelector('.carousel-list .BlogFeatured-item');
         let maxScroll = list.scrollWidth - list.clientWidth;
         let scrollAvailable = maxScroll - list.scrollLeft;
 
@@ -93,30 +93,36 @@ export default class BlogTop extends Component {
     view() {
         const defaultImage = app.forum.attribute('blogDefaultImage')
         return (
-            <div class="BlogFeatured-carousel">
-                <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(-1)} icon={'fas fa-arrow-left'}> </Button>
-                <div class="BlogFeatured-list">
-                    {/* Ghost data */}
-                    {this.isLoading && [...new Array(4).fill(undefined)].map(() => (
-                        <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
-                            <div class="BlogFeatured-list-item-details">
-                                <h4>&nbsp;</h4>
-                                <div class="data">
-                                    <span>
-                                        <i class="far fa-wave" />
-                                    </span>
+            <>
+                {!this.isLoading &&
+                    this.articles?.length >= 1 &&
+                    this.articles.slice(0,3).map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
+                )}
+                <div class="BlogFeatured-carousel">
+                    <Button className={'Button carousel-button'} onclick={() => this.scroll(-1)} icon={'fas fa-arrow-left'}> </Button>
+                    <div class="carousel-list">
+                        {/* Ghost data */}
+                        {this.isLoading && [...new Array(4).fill(undefined)].map(() => (
+                            <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
+                                <div class="BlogFeatured-list-item-details">
+                                    <h4>&nbsp;</h4>
+                                    <div class="data">
+                                        <span>
+                                            <i class="far fa-wave" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
 
-                    {!this.isLoading &&
-                        this.articles?.length >= 0 &&
-                        this.articles.map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
+                        {!this.isLoading &&
+                            this.articles?.length >= 4 &&
+                            this.articles.slice(3).map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
                         )}
+                    </div>
+                    <Button className={'Button carousel-button'} onclick={() => this.scroll(1)} icon={'fas fa-arrow-right'}> </Button>
                 </div>
-                <Button className={'Button BlogFeatured-button'} onclick={() => this.scroll(1)} icon={'fas fa-arrow-right'}> </Button>
-            </div>
+            </>
         );
     }
 }

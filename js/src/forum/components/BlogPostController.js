@@ -111,7 +111,6 @@ export default class BlogPostController extends Component {
         Button.component(
           {
             className: 'Button',
-            disabled: !app.forum.attribute('canApproveBlogPosts'),
             onclick: () => {
 
 
