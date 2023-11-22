@@ -66,6 +66,9 @@ class CreateBlogMetaHandler
         $discussionId = Arr::get($data, 'relationships.discussion.data.id');
         $discussion = $this->discussion->findOrFail($discussionId, $actor);
 
+        // Check if the user can publish his own articles
+        $canPublish = $actor->can('blog.canApprovePosts') ||  $discussion->user->id == $actor->id;
+
         // Create new blog meta
         $blogMeta = BlogMeta::firstOrNew([
             'discussion_id' => $discussion->id
@@ -81,7 +84,7 @@ class CreateBlogMetaHandler
         $blogMeta->is_pending_review = true;
 
         //If we have a publish date, dont give a fuck...is """pending review"""
-        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {
+        if ($canPublish && Arr::has($data, 'attributes.publishDate')) {
             $blogMeta->publish_date = Arr::get($data, 'attributes.publishDate', false);
             if ($blogMeta->publish_date) {
                 $blogMeta->is_pending_review = true;
@@ -92,7 +95,7 @@ class CreateBlogMetaHandler
         $this->dispatcher->dispatch(
             new BlogMetaSaving($blogMeta, $actor, $data)
         );
-        
+
         $event = $blogMeta->is_pending_review ? Hidden::class : Started::class;
         $this->dispatcher->dispatch(new $event($blogMeta->discussion, $actor));
 

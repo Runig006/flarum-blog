@@ -76,6 +76,10 @@ class UpdateBlogMetaHandler
         // Update new blog meta
         $blogMeta = BlogMeta::findOrFail($command->id);
 
+        // Check if the user can publish his own articles
+        $canPublish = $actor->can('blog.canApprovePosts') || $blogMeta->discussion->user->id == $actor->id;
+        
+
         // Featured image
         if (Arr::has($data, 'attributes.featuredImage')) {
             $blogMeta->featured_image = Arr::get($data, 'attributes.featuredImage', null);
@@ -97,11 +101,11 @@ class UpdateBlogMetaHandler
         }
 
         // Update pending review
-        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.isPendingReview')) {
+        if ($canPublish && Arr::has($data, 'attributes.isPendingReview')) {
             $blogMeta->is_pending_review = Arr::get($data, 'attributes.isPendingReview', false);
         }
 
-        if ($actor->can('blog.canApprovePosts') && Arr::has($data, 'attributes.publishDate')) {
+        if ($canPublish && Arr::has($data, 'attributes.publishDate')) {
             $blogMeta->publish_date = Arr::get($data, 'attributes.publishDate', false);
             if ($blogMeta->publish_date) {
                 $blogMeta->is_pending_review = true;

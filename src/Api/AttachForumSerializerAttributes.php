@@ -29,6 +29,7 @@ class AttachForumSerializerAttributes
         $attributes['blogHideTags'] = $this->settings->get('blog_hide_tags', true);
         $attributes['blogDefaultImage'] = $this->settings->get('blog_default_image_path', null);
         $attributes['canWriteBlogPosts'] = $serializer->getActor()->can('blog.writeArticles');
+        $attributes['canApproveBlogPosts'] = $serializer->getActor()->can('blog.canApprovePosts');
         $attributes['blogAddHero'] = $this->settings->get('blog_add_hero', true);
         $attributes['htmlSideBar'] = $this->settings->get('blog_html_sidebar', null);
         return $attributes;
