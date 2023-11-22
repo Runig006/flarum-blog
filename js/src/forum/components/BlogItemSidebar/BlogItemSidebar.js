@@ -16,7 +16,7 @@ export default class BlogItemSidebar extends Component {
   items() {
     const itemlist = new ItemList();
     itemlist.add('author', BlogAuthor.component(this.attrs), 0);
-    itemlist.add('fastNews', BlogSide.component(this.attrs), 0);
+    itemlist.add('sidebar', BlogSide.component(this.attrs), 0);
     return itemlist;
   }
 }

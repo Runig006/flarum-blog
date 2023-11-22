@@ -181,22 +181,19 @@ export default class BlogItem extends Page {
   }
 
   contentItems() {
-    const defaultImage = app.forum.attribute('blogDefaultImage')
-      ? `url(${app.forum.attribute('baseUrl')}/assets/${app.forum.attribute('blogDefaultImage')})`
-      : null;
-
-    const blogImage = this.article?.blogMeta()?.featuredImage?.() ? this.article.blogMeta().featuredImage() : defaultImage;
-
     const items = new ItemList();
+    const blogImage = this.article?.blogMeta()?.featuredImage?.();
 
-    items.add(
-      'image',
-      <div className={classList('FlarumBlog-Article-Image FlarumBlog-default-image', { 'FlarumBlog-Article-GhostImage': this.loading })}>
-        <img src={blogImage}/>
-      </div>  
-      ,
-      100
-    );
+    if (blogImage) {
+      items.add(
+        'image',
+        <div className={classList('FlarumBlog-Article-Image', { 'FlarumBlog-Article-GhostImage': this.loading })}>
+          <img src={blogImage} />
+        </div>
+        ,
+        100
+      );
+    }
 
     if (this.article && (app.session.user?.canEdit?.() || this.article?.canRename?.() || this.article?.posts?.()?.[0]?.canEdit?.())) {
       items.add('editArticle', <BlogPostController article={this.article} />, 80);
