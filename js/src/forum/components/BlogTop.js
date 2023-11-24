@@ -82,7 +82,7 @@ export default class BlogTop extends Component {
                 list.scrollLeft = maxScroll;
                 break;
             default:
-                list.scrollLeft += (direction * (item.clientWidth) * 1) + 5;
+                list.scrollLeft += (direction * (item.clientWidth) * 1) + 10 ;
                 break;
         }
 

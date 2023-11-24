@@ -72,7 +72,7 @@
       z-index: 2;
 
       @media @desktop-up {
-        font-size: 30px;
+        font-size: 25px;
       }
     }
 
@@ -177,6 +177,26 @@
   }
 }
 
+//Top Part
+.FlarumBlogTitle{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .FlarumBlogCompressButtons{
+      font-size: 1.5rem;
+      i{
+        margin-left: 1.5rem;
+        &.active,&:hover{
+          color: @primary-color;
+        }
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
+}
+
 //The grid
 .FlarumBlogGrid {
   display: grid;
@@ -194,6 +214,21 @@
       height: 100%;
     }
   }
+}
+
+.FlarumBlogGridCompact{
+  align-items: initial;
+  >:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+  }
+  .BlogSide{
+    grid-row-end: 5;
+  }
+  .BlogList-item-sized{
+    grid-column: 1;
+  }
+  
 }
 
 //The featured carousel
@@ -221,7 +256,7 @@
       min-width: 100%;
 
       @media @tablet-up {
-        min-width: calc(50% - 5px);
+        min-width: 50%;
       }
 
     }

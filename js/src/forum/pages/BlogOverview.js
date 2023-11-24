@@ -17,6 +17,7 @@ export default class BlogOverview extends Page {
 
     this.bodyClass = 'BlogOverviewPage';
 
+    this.compactedView = localStorage.getItem('blog-compacted-view') ?? false;
     this.isLoading = true;
     this.articles = [];
     this.languages = app.store.all('discussion-languages');
@@ -58,7 +59,7 @@ export default class BlogOverview extends Page {
       this.articles = values;
       this.isLoading = false;
       this.biggerArticles = this.articles.filter((arti) => arti.blogMeta()?.isSized?.());
-      if(this.biggerArticles.length % 2 != 0){
+      if (this.biggerArticles.length % 2 != 0) {
         this.articles.pop();
       }
       m.redraw();
@@ -114,8 +115,17 @@ export default class BlogOverview extends Page {
               />
             )}
           </div>
-          {this.title()}
-          <div class="FlarumBlogGrid">
+          <div class="FlarumBlogTitle">
+            {this.title()}
+            <div class="FlarumBlogCompressButtons">
+              <i class={`fas fa-compress  ${this.compactedView === true ? 'fa-expand' : 'fa-compress'}`} onclick={() => {
+                this.compactedView = !this.compactedView;
+                localStorage.setItem('blog-compacted-view', this.compactedView)
+              }}></i>
+
+            </div>
+          </div>
+          <div class={`FlarumBlogGrid ${this.compactedView === true ? 'FlarumBlogGridCompact' : ''}`}>
             {<BlogTop />}
             {this.isLoading && [false, false, false, false, false].map((state) => {
               return (
