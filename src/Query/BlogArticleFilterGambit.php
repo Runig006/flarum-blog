@@ -38,14 +38,14 @@ class BlogArticleFilterGambit extends AbstractRegexGambit implements FilterInter
 
     protected function conditions(SearchState $search, array $matches, $negate)
     {
-        $position = (int) trim($matches[1]) ?? 0;
+        $position = (int) trim($matches[1]);
         $position = (int) $position;
         $this->buildQuery($search->getQuery(), $position, $negate);
     }
 
     public function filter(FilterState $filterState, $filterValue, bool $negate)
     {
-        $position = (int) trim($filterValue) ?? 0;
+        $position = (int) trim($filterValue);
         $position = (int) $filterValue;
         $this->buildQuery($filterState->getQuery(), $position, $negate);
     }

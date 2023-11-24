@@ -50,6 +50,11 @@ use V17Development\FlarumBlog\Formatter\ReviewFormatter;
 use V17Development\FlarumBlog\Formatter\ScoreFormatter;
 use V17Development\FlarumBlog\Query\PendingValidationGambit;
 
+use Flarum\Foundation\Paths;
+use Flarum\Http\UrlGenerator;
+use V17Development\FlarumBlog\Console\CreateRssCommand;
+use V17Development\FlarumBlog\Console\CreateRssSchedule;
+
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__ . '/js/dist/forum.js')
@@ -59,10 +64,8 @@ return [
         ->route('/blog/pending', 'blog.pending')
         ->route('/blog/list', 'blog.list')
         ->route('/blog/category/{category}', 'blog.category', BlogOverviewController::class)
-        ->route('/blog/{id:[\d\S]+(?:-[^/]*)?}', 'blog.post', BlogItemController::class)
-    // Shall we add RSS?
-    // ->get('/blog/rss.xml', 'blog.rss.xml', RSS::class)
-    ,
+        ->route('/blog/{id:[\d\S]+(?:-[^/]*)?}', 'blog.post', BlogItemController::class),
+
     (new Extend\Frontend('admin'))
         ->js(__DIR__ . '/js/dist/admin.js')
         ->css(__DIR__ . '/less/Admin.less'),
@@ -131,7 +134,20 @@ return [
     (new Extend\Formatter())
         ->configure(ScoreFormatter::class),
 
+    (new Extend\View())
+        ->namespace('fof-blog', __DIR__ . '/views'),
+
+    (new Extend\Filesystem())
+        ->disk('flarum-rss', function (Paths $paths, UrlGenerator $url) {
+            return [
+                'root'   => "$paths->public/rss",
+                'url'    => $url->to('forum')->path('rss'),
+            ];
+        }),
+
     (new Extend\Console())
         ->command(AutoValidateCommand::class)
-        ->schedule(AutoValidateCommand::class, new AutoValidateSchedule()),
+        ->schedule(AutoValidateCommand::class, new AutoValidateSchedule())
+        ->command(CreateRssCommand::class)
+        ->schedule(CreateRssCommand::class, new CreateRssSchedule),
 ];
