@@ -1,6 +1,6 @@
 .review{
-    background-color: fade(@primary-color,20%);
-    color: contrast(fade(@primary-color,80%));
+    background-color: var(--primary-transparent);
+    color: var(--primary-constract);
     border-radius: 5px;
     text-align: center;
     padding: 10px;
@@ -51,7 +51,7 @@
     content: "";
     position: absolute;
     inset: 1rem;
-    background: @body-bg;
+    background: var(--body-bg);
     border-radius: inherit;
     z-index: 1;
 }
