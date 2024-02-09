@@ -230,49 +230,6 @@
   
 }
 
-//The featured carousel
-.BlogFeatured-carousel {
-  position: relative;
-
-  height: min-content;
-
-  @media @tablet-up {
-    grid-column: span 2;
-  }
-
-  .carousel-list {
-    display: flex;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-
-    @media @phone{
-      overflow-x: auto;
-    }
-
-    .BlogFeatured-item {
-      margin-right: 10px;
-      min-width: 100%;
-
-      @media @tablet-up {
-        min-width: 50%;
-      }
-
-    }
-  }
-
-  .carousel-button {
-    position: absolute;
-    top: 40%;
-    z-index: 20;
-    padding-right: 4px;
-  }
-
-  .carousel-button:last-child {
-    right: 0%;
-  }
-}
-
 .BlogSide {
   grid-row-start: 8;
   grid-row-end: 10;

@@ -34,5 +34,16 @@ export default function () {
                 {app.translator.trans('v17development-flarum-blog.forum.buttons.review_tooltip')}
             </TextEditorButton>
         ),100);
+
+        items.add('carousel', (
+            <TextEditorButton onclick={() => {
+                let selection = this.attrs.composer.editor.getSelectionRange();
+                this.attrs.composer.editor.insertAt(selection[1], '[/carousel]');
+                this.attrs.composer.editor.insertAt(selection[0], '[carousel]');
+            }} icon="far fa-images"
+            >
+                {app.translator.trans('v17development-flarum-blog.forum.buttons.carousel_tooltip')}
+            </TextEditorButton>
+        ),100);
     });
 }

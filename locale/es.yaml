@@ -50,6 +50,7 @@ v17development-flarum-blog:
     return_to_overview: "Volver a vista de blog"
     no_more_posts: "No hay más articulos"
     category_empty: "No hay más articulos en esta categoria"
+    threads: "Hilos"
   
     articles: "Articulos"
     pending: "Articulos pendientes"
@@ -117,6 +118,7 @@ v17development-flarum-blog:
       score_tooltip: "Añade una puntuación"
       review_tooltip: "Selección como review"
       center_tooltip: "Centrar selección"
+      carousel_tooltip: "Añade un carrousel de elementos"
 
 
     article_settings:

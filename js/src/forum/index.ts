@@ -22,11 +22,15 @@ import AddBadges from './components/AddBadges';
 import BlogPending from './pages/BlogPending';
 import BlogList from './pages/BlogList';
 
+import Carousel from './components/Carousel';
+import ThreadsList from './pages/ThreadsList';
+
 
 // Register Flarum Blog
 app.initializers.add(
   'v17development-flarum-blog',
   (app) => {
+    /* ROUTES */
     app.routes.blog = { path: '/blog', component: BlogOverview };
 
     app.routes.blogCategory = {
@@ -46,6 +50,11 @@ app.initializers.add(
 
     app.routes.blogList = {
       path: '/blog/list',
+      component: IndexPage,
+    };
+
+    app.routes.threadsList = {
+      path: '/thread/list',
       component: IndexPage,
     };
 
@@ -74,15 +83,27 @@ app.initializers.add(
     // Add a link to the blog to the IndexPage sidebar, if enabled.
     addSidebarNav();
 
+    //////
+    // CUSTOM RUNIG006
+    //////
+
+    // Custom the User Card
     addPreferences();
     UserCard();
 
+    // Add Buttons badges and more
     AddEditorButtons();
     AddDiscussionControls();
     AddBadges();
     
+    // Add special views
     BlogPending();
     BlogList();
+    ThreadsList();
+
+    // Enable the Carousel login in the comments
+    // The button is in EditorButtons
+    Carousel();
   },
   -100000
 );

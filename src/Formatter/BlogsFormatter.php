@@ -5,14 +5,28 @@ namespace V17Development\FlarumBlog\Formatter;
 use Exception;
 use s9e\TextFormatter\Configurator;
 
-class ScoreFormatter
+class BlogsFormatter
 {
     public function __invoke(Configurator $config)
     {
-
         $config->BBCodes->addCustom(
             '[review]{TEXT}[/review]',
             '<div class="review">{TEXT}</div>'
+        );
+        
+        $config->BBCodes->addCustom(
+            '[carousel]{TEXT}[/carousel]',
+            '<div class="carousel">
+                <button class="Button carousel-button hasIcon">
+                    <i aria-hidden="true" class="icon fas fa-arrow-left Button-icon"></i>
+                    <span class="Button-label"> </span>
+                </button>
+                <div class="carousel-list">{TEXT}</div>
+                <button class="Button carousel-button hasIcon" type="button">
+                    <i aria-hidden="true" class="icon fas fa-arrow-right Button-icon"></i>
+                    <span class="Button-label"> </span>
+                </button>
+            </div>'
         );
 
         $config->BBCodes->addCustom(

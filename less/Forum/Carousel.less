@@ -1,0 +1,35 @@
+.carousel {
+    position: relative;
+    height: min-content;
+
+    @media @tablet-up {
+        grid-column: span 2;
+    }
+
+    .carousel-list {
+        display: flex;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+
+        @media @phone {
+            overflow-x: auto;
+        }
+
+        >*{
+            margin-right: 10px;
+            min-width: 50%;
+        }
+    }
+
+    .carousel-button {
+        position: absolute;
+        top: 40%;
+        z-index: 20;
+        padding-right: 4px;
+
+        &:last-child {
+            right: 0%;
+        }
+    }
+}

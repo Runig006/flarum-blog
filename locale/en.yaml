@@ -50,6 +50,7 @@ v17development-flarum-blog:
     return_to_overview: "Return to blog overview "
     no_more_posts: "No more blog posts."
     category_empty: "There are no blog posts in this category."
+    threads: "Threads"
 
     articles: "Articles"
     pending: "Pending Articles"
@@ -119,6 +120,7 @@ v17development-flarum-blog:
       score_tooltip: "Add a scoring circle"
       review_tooltip: "Style the selection as review"
       center_tooltip: "Center a selection"
+      carousel_tooltip: "Add a carousel of any elements"
 
 
     article_settings:
