@@ -115,19 +115,10 @@
 
   .BlogList-item-content {
     text-align: center;
-
-    .summary {
-      transition: font-size 0.5s;
-      font-size: 0;
-    }
   }
 
   // Sized card
   &-sized {
-    .summary {
-      font-size: inherit !important;
-    }
-
     @media @tablet-up {
       grid-column: span 2;
     }
@@ -164,10 +155,6 @@
 
   &:hover {
     box-shadow: 1px 3px 15px 5px var(--control-bg);
-
-    .summary {
-      font-size: inherit;
-    }
   }
 }
 
@@ -227,9 +214,21 @@
   .BlogList-item-sized{
     grid-column: 1;
   }
-  
+
+  .BlogList-item {
+    .summary {
+      transition: font-size 0.5s;
+      font-size: 0;
+    }
+    &:hover{
+      .summary {
+        font-size: inherit;
+      }
+    }
+  }
 }
 
+//Side
 .BlogSide {
   grid-row-start: 8;
   grid-row-end: 10;

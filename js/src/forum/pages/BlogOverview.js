@@ -17,7 +17,7 @@ export default class BlogOverview extends Page {
 
     this.bodyClass = 'BlogOverviewPage';
 
-    this.compactedView = localStorage.getItem('blog-compacted-view') ?? false;
+    this.compactedView = localStorage.getItem('blog-compacted-view') == 'true';    
     this.isLoading = true;
     this.articles = [];
     this.languages = app.store.all('discussion-languages');
@@ -118,7 +118,7 @@ export default class BlogOverview extends Page {
           <div class="FlarumBlogTitle">
             {this.title()}
             <div class="FlarumBlogCompressButtons">
-              <i class={`fas fa-compress  ${this.compactedView === true ? 'fa-expand' : 'fa-compress'}`} onclick={() => {
+              <i class={`fas fa-compress  ${this.compactedView == true ? 'fa-expand' : 'fa-compress'}`} onclick={() => {
                 this.compactedView = !this.compactedView;
                 localStorage.setItem('blog-compacted-view', this.compactedView)
               }}></i>
