@@ -31,7 +31,7 @@ export default class BlogTop extends Component {
         let promise = app.store.find('discussions', {
             page: {
                 page: 1,
-                limit: 12,
+                limit: 3,
             },
             filter: {
                 q: query,
@@ -54,30 +54,6 @@ export default class BlogTop extends Component {
                     this.articles?.length >= 1 &&
                     this.articles.slice(0,3).map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
                 )}
-                <div class="carousel">
-                    <Button className={'Button carousel-button'} icon={'fas fa-arrow-left'}> </Button>
-                    <div class="carousel-list">
-                        {/* Ghost data */}
-                        {this.isLoading && [...new Array(4).fill(undefined)].map(() => (
-                            <div class="BlogFeatured-list-item BlogFeatured-list-item-ghost">
-                                <div class="BlogFeatured-list-item-details">
-                                    <h4>&nbsp;</h4>
-                                    <div class="data">
-                                        <span>
-                                            <i class="far fa-wave" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-
-                        {!this.isLoading &&
-                            this.articles?.length >= 4 &&
-                            this.articles.slice(3).map((article) => <FeaturedBlogItem article={article} defaultImage={defaultImage} />
-                        )}
-                    </div>
-                    <Button className={'Button carousel-button'} icon={'fas fa-arrow-right'}> </Button>
-                </div>
             </>
         );
     }

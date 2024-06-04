@@ -21,7 +21,7 @@ export default class BlogSide extends Component {
   }
 
   reloadData() {
-    let query = 'blog:2';
+    let query = 'blog:-1';
     if (this.languages !== null && this.languages.length >= 1) {
       query += ` language:${this.currentSelectedLanguage}`;
     }

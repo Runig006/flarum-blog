@@ -38,8 +38,22 @@ class BlogsFormatter
             </div>'
         );
         $config->tags['score']->filterChain->append([static::class, 'calculateColor']);
+        $config->MediaEmbed->add(
+            'ivoox',
+            [
+                'host'    => ['ivoox.com'],
+                'extract' => [
+                    "!ivoox\\.com/.*mp3_rf_(?'id'[-0-9A-Z_a-z]+)!",
+                ],
+                'iframe'  => [
+                    'width'  => 560,
+                    'height' => 315,
+                    'src'    => 'https://www.ivoox.com/player_ej_{@id}.html',
+                ]
+            ]
+        );
     }
-
+    
     public static function calculateColor($tag)
     {
         $score = $tag->getAttribute('content'); //Dont have a fucking clue WHY is content

@@ -25,7 +25,6 @@ export default class BlogPostSettingsModal extends Modal {
     this.positionOptions = {
       0: 'Normal',
       1: 'Destacada',
-      2: 'Rapida'
     };
     this.position = Stream(this.meta.position() || 0);
     this.isSized = Stream(this.meta.isSized() || false);

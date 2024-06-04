@@ -7,7 +7,7 @@ import Link from 'flarum/common/components/Link';
 import LanguageDropdown from '../components/LanguageDropdown/LanguageDropdown';
 import BlogOverviewItem from '../components/BlogOverviewItem';
 import BlogTop from '../components/BlogTop';
-import BlogSide from '../components/BlogSide';
+import BlogCrude from '../components/BlogCrude';
 
 export default class BlogOverview extends Page {
   oninit(vnode) {
@@ -148,8 +148,9 @@ export default class BlogOverview extends Page {
             {!this.isLoading && this.articles.length >= 1 && this.articles.map((article) =>
               <BlogOverviewItem article={article} defaultImage={defaultImage}
               />)}
-
-            {<BlogSide />}
+            <div className="BlogSide">
+              {<BlogCrude/>}
+            </div>
           </div>
           <div class="Form--centered">
             <Link href={app.route('blogList')} className={'FlarumBlog-reached-load-more'}>
